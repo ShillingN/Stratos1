@@ -1,0 +1,69 @@
+{% extends 'client/base.html' %}
+{% block content %}
+    <section class="back-page">
+        <div class="group-circle  bottom">
+            <img src="../../static/client/Group-2.png" alt="">
+        </div>
+        <div class="background-header"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="h1">История операция</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-page">
+        <div class="container">
+            <div class="row">
+                {% include 'client/client_menu.html' %}
+                <div class="col-12 col-lg-8 col-xl-8 container-scroll">
+                    <div class="container-exchange mb-5 max-content">
+                        <div class="exchange-header">
+                            <div class="exchange-header-give font-title-exchange text-center  title-contact container-history-header history-title">
+                                <div class="item-history">Заявка №</div>
+                                <div class="item-history">Дата</div>
+                                <div class="item-history">Перевод</div>
+                                <div class="item-history">Статус</div>
+                            </div>
+                        </div>
+                        <div class="exchange-content">
+                            {% if len(orders) > 0 %}
+                                {% for order in orders %}
+                                    <div class="list d-flex container-history-header font-Sans">
+                                        <div class="item-history">
+                                            {{ order.code }}
+                                        </div>
+                                        <div class="item-history">
+                                            {{ order.create_date.strftime('%d.%m.%Y %H:%M') }}
+                                        </div>
+                                        <div class="item-history">
+                                            <img src="../../static/icons/{{ order.t_from.name }}.png" alt="">
+                                            {{ order.give_amount }} {{ order.t_from.name }}
+                                            <img src="../../static/icons/{{ order.t_to.name }}.png" alt="">
+                                            {{ order.receipt_amount }} {{ order.t_to.name }}
+                                        </div>
+                                        <div class="item-history">
+                                            {{ order.get_client_status() }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                История пуста
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+
+    </script>
+{% endblock %}

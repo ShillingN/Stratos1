@@ -1,0 +1,642 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Сделки | StratosChange{% endblock %}
+
+{% block content %}
+
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+        <div class="col">
+            <div class="card radius-10 overflow-hidden bg-primary">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-white" id="income_text">Отправлено фиата сегодня</p>
+                            <h5 class="mb-0 text-white" id="income_value">{{ outcome_cash }} ₽</h5>
+                        </div>
+                        <div class="ms-auto text-white">	<i class='bx bx-wallet font-30'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card radius-10 overflow-hidden bg-primary">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <p class="mb-0 text-white" id="income_text">Получено фиата сегодня</p>
+                            <h5 class="mb-0 text-white" id="income_value">{{ income_cash }} ₽</h5>
+                        </div>
+                        <div class="ms-auto text-white">	<i class='bx bx-wallet font-30'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Сделки</div>
+    </div>
+    <!--end breadcrumb-->
+    <hr/>
+    <div class="card" style="width: fit-content">
+        <div class="card-body" style="width: fit-content">
+            <div class="row g-3" id="hidden_content">
+                <div class="col-md-1">
+                    <label for="f_status" class="form-label">Статус сделки</label>
+                    <select id="f_status" class="form-select" onchange="loadOrders(true)">
+                        <option value="" selected>Все статусы</option>
+                        <option value="-1">Сделка отменена</option>
+                        <option value="0">Новая сделка</option>
+                        <option value="1">Клиент перевёл</option>
+                        <option value="2">Депозит получен</option>
+                        <option value="3">Сделка завершена</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label for="f_date_from" class="form-label">Дата от</label>
+                    <input class="form-control ddd" type="text" id="f_date_from" placeholder="Дата до" onchange="loadOrders(true)">
+                </div>
+                <div class="col-md-1">
+                    <label for="f_date_to" class="form-label">Дата до</label>
+                    <input class="form-control ddd" type="text" id="f_date_to" placeholder="Дата до" onchange="loadOrders(true)">
+                </div>
+                <div class="col-md-1">
+                    <label for="f_tool_from" class="form-label">Отдаёт</label>
+                    <select id="f_tool_from" class="form-select" onchange="loadOrders(true)">
+                        <option value="" selected>Все инструменты</option>
+                        {% for tool in tools %}
+                            <option value="{{ tool.name }}{% if tool.network != None %}^{{ tool.network }}{% endif %}">{{ tool.name }} {% if tool.network != None %}{{ tool.network }}{% endif %}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label for="f_tool_to" class="form-label">Получает</label>
+                    <select id="f_tool_to" class="form-select" onchange="loadOrders(true)">
+                        <option value="" selected>Все инструменты</option>
+                        {% for tool in tools %}
+                            <option value="{{ tool.name }}{% if tool.network != None %}^{{ tool.network }}{% endif %}">{{ tool.name }} {% if tool.network != None %}{{ tool.network }}{% endif %}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="search_row" class="form-label">Поиск</label>
+                    <input class="form-control" type="text" id="search_row" placeholder="Поиск" onchange="loadOrders(true)">
+                </div>
+                <div class="col-md-1 hidden-sm hidden-xs">
+                    <label for="" class="form-label"> </label>
+                    <button class="btn btn-success" style="display: block; width: 100%;" onclick="toAnalytics()">Экспорт</button>
+                </div>
+            </div>
+            <div class="row" id="hidden_btn">
+                <div class="col-12">
+                    <button class="btn btn-success" id="sp_btn">Настройки экспорта</button>
+                </div>
+            </div>
+
+            <div id="btn_containers" style="display: flex; margin-top: 16px;">
+                <div id="pages"></div>
+                <div id="search"></div>
+            </div>
+
+            <div class="table-responsive" style="margin-top: 16px;">
+                <table id="table" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Действия</th>
+                        <th>ID</th>
+                        <th>Код</th>
+                        <th>Статус</th>
+                        <th>Email</th>
+                        <th>Отдаёт</th>
+                        <th>Получает</th>
+                        <th>Реквизиты</th>
+                        <th>Кошелёк получателя</th>
+                        <th>Реферер</th>
+                        <th>Дата создания</th>
+                        <th>Дата закрытия</th>
+                    </tr>
+                    </thead>
+                    <tbody id="orders_list">
+
+                    </tbody>
+                </table>
+
+                <div class="spinner-border" role="status" id="spinner" style="display: none;"> <span class="visually-hidden">Loading...</span></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="orderBox" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Управление сделкой</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="order_id" class="col-sm-3 col-form-label">ID сделки</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_id" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_code" class="col-sm-3 col-form-label">Код сделки</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_code" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_client_email" class="col-sm-3 col-form-label">Email клиента</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_client_email" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_status" class="col-sm-3 col-form-label">Статус заявки</label>
+                        <div class="col-sm-9">
+                            <select id="order_status" class="form-select" onchange="changeStatus(this)">
+                                <option value="-1">Заявка отменена</option>
+                                <option value="0">Новая заявка</option>
+                                <option value="1">Клиент перевёл</option>
+                                <option value="2">Депозит получен</option>
+                                <option value="3">Заявка завершена</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_tool_from" class="col-sm-3 col-form-label">Отдаёт</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <span class="input-group-text" id="order_tool_from_name">Tool</span>
+                                <input type="number" class="form-control" aria-describedby="order_tool_from_name" id="order_tool_from" step="0.01" onchange="changeGive(this)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_tool_to" class="col-sm-3 col-form-label">Получает</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <span class="input-group-text" id="order_tool_to_name">Tool</span>
+                                <input type="number" class="form-control" aria-describedby="order_tool_to_name" id="order_tool_to" step="0.01" onchange="changeReceipt(this)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_current_cost" class="col-sm-3 col-form-label">Курс обмена</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_current_cost" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_from_wallet" class="col-sm-3 col-form-label">Кошелёк/Карта отправителя</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_from_wallet" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_to_wallet" class="col-sm-3 col-form-label">Кошелёк/Карта получателя</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_to_wallet" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_exchange_wallet" class="col-sm-3 col-form-label">Кошелёк/Карта депозита</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_exchange_wallet" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_create_date" class="col-sm-3 col-form-label">Дата создания</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_create_date" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_finish_date" class="col-sm-3 col-form-label">Дата завершения</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_finish_date" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_ref_id" class="col-sm-3 col-form-label">Реферальный код</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_ref_id" readonly>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <label for="order_cash_telegram" class="col-sm-3 col-form-label">Телеграм</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_cash_telegram" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_cash_name" class="col-sm-3 col-form-label">Имя</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_cash_name" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_cash_station" class="col-sm-3 col-form-label">Телефон</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_cash_station" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="order_cash_wallet" class="col-sm-3 col-form-label">Кошелёк</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="order_cash_wallet" readonly>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Событие</th>
+                            </tr>
+                            </thead>
+                            <tbody id="events_list">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="changeStatusBox" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Изменение статуса</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="changeStatusContent" style="display: block;">
+                        <label for="new_status">Выберите новый статус</label>
+                        <select id="new_status" class="form-select">
+                            <option value="-1">Сделка отменена</option>
+                            <option value="0">Новая сделка</option>
+                            <option value="1">Клиент перевёл</option>
+                            <option value="2">Депозит получен</option>
+                            <option value="3">Сделка завершена</option>
+                        </select>
+                    </div>
+                    <div id="changeStatusLoader" style="display: none; justify-content: center; align-items: center; height: 120px;">
+                        <div class="spinner-grow text-success" role="status"> <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="change_footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary" onclick="changeStatuses()">Изменить статус</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <button class="btn btn-success" id="btn_change" style="position: fixed; right: 16px; bottom: 16px; display: none;" data-bs-toggle="modal" data-bs-target="#changeStatusBox">Изменить статус</button>
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        let first = true;
+
+        $('.ddd').pickadate({
+            selectMonths: true,
+            selectYears: true,
+            format: 'yyyy-mm-dd',
+        })
+
+        let page = 0;
+        let ord_id = 0;
+        let table = null;
+        let loading = false;
+
+        loadOrders();
+
+        function loadOrders(cleared=false) {
+            if(cleared) {
+                page = 0;
+                $('.order_row').remove();
+            }
+            spinner.style.display = 'block';
+            loading = true;
+            let data = {
+                'status': f_status.value,
+                'date_from': f_date_from.value,
+                'date_to': f_date_to.value,
+                'tool_from': f_tool_from.value,
+                'tool_to': f_tool_to.value,
+                'query': search_row.value,
+                'page': page,
+            }
+            $.ajax({
+                url: `/orders/api/get/list`,
+                data: data,
+                success: function (msg) {
+                    spinner.style.display = 'none';
+                    loading = false;
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    if(table !== null) table.destroy();
+
+                    drawOrders(msg['orders'], cleared)
+
+                    //table = $('#table').DataTable({ "aaSorting": [[ 0, "desc" ]] });  btn_containers
+                    /*table = $('#table').DataTable( {
+                        aaSorting: [[ 1, "desc" ]]
+                    } );*/
+
+                    while (search.firstChild) {
+                        search.removeChild(search.firstChild);
+                    }
+
+                    while (pages.firstChild) {
+                        pages.removeChild(pages.firstChild);
+                    }
+
+                    $('input[type=search]').appendTo('#search').attr('placeholder', 'Поиск');
+                    $('select[name=table_length]').appendTo('#pages')
+                    $('#table_length').css('display', 'none')
+                    $('#table_filter').css('display', 'none')
+
+                    let s = $('input[type=search]')[0];
+                    s.onchange = function () {
+                        saveQuery(s, 'orders')
+                    }
+
+                    if(first){
+                        s.value = '{{ query }}'
+                        let event = new Event('input');
+                        s.dispatchEvent(event);
+                        first = false;
+                    }
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function drawOrders(orders, cleared=false) {
+            checkOrders();
+            for(let i = 0; i < orders.length; i++){
+                let order = orders[i];
+
+                let tool_from = order['tool_from'];
+                if(order['tool_from_network'] !== null) tool_from += ' ' + order['tool_from_network']
+                let tool_to = order['tool_to'];
+                if(order['tool_to_network'] !== null) tool_from += ' ' + order['tool_to_network']
+
+                let table_class = ''
+                if(order['status'] === 0) table_class = 'table-primary'
+                if(order['status'] === 1) table_class = 'table-warning'
+                if(order['status'] === 2) table_class = 'table-warning'
+                if(order['status'] === 3) table_class = 'table-success'
+
+                let ref = order['ref_id'];
+                if(ref === null || ref === undefined) ref = '';
+
+                let tr = createBlockWithClassName('tr', 'order_row ' + table_class);
+                let td_checkbox = createBlockWithClassName('td', '');
+                let td_id = createBlockWithClassName('td', '', order['id']);
+                let td_code = createBlockWithClassName('td', '', order['code']);
+                let td_status = createBlockWithClassName('td', '', order['status_str']);
+                let td_email = createBlockWithClassName('td', '', order['client_email']);
+                let td_give_amount = createBlockWithClassName('td', '', `${order['give_amount']} ${tool_from}`);
+                let td_receipt_amount = createBlockWithClassName('td', '', `${order['receipt_amount']} ${tool_to}`);
+                let td_to_wallet = createBlockWithClassName('td', '', `${order['to_wallet']}`);
+                let td_exchange_wallet = createBlockWithClassName('td', '', `${order['exchange_wallet']}`);
+                let td_ref_id = createBlockWithClassName('td', '', `${ref}`);
+                let td_create_date = createBlockWithClassName('td', '', `${order['create_date']}`);
+
+                let checkbox = createBlockWithClassName('input', 'check_order');
+                checkbox.type = 'checkbox';
+                checkbox.setAttribute('order_id', order['id'])
+                checkbox.onclick = function(){
+                    checkOrders();
+                }
+                td_checkbox.append(checkbox);
+
+                let td_end_date;
+                if(order['finish_date'] === null)
+                    td_end_date = createBlockWithClassName('td', '');
+                else
+                    td_end_date = createBlockWithClassName('td', '', order['finish_date']);
+
+                let td_actions = createBlockWithClassName('td', '');
+
+                let btn = createBlockWithClassName('button', 'btn btn-sm btn-secondary', 'Управление')
+                btn.setAttribute('data-bs-toggle', 'modal');
+                btn.setAttribute('data-bs-target', '#orderBox');
+                btn.onclick = function() {openOrder(order)}
+                td_actions.append(btn);
+
+                tr.append(td_checkbox, td_actions, td_id, td_code, td_status, td_email, td_give_amount, td_receipt_amount, td_to_wallet, td_exchange_wallet, td_ref_id, td_create_date, td_end_date);
+                orders_list.append(tr);
+            }
+        }
+
+        function openOrder(order) {
+            ord_id = order['id'];
+            loadEvents(order['id']);
+            order_id.value = order['id'];
+            order_code.value = order['code'];
+            order_client_email.value = order['client_email'];
+
+            $('#order_status').val(String(order['status']))
+
+            order_tool_from_name.innerText = order['tool_from'];
+            if(order['tool_from_network'] !== null) order_tool_from_name.innerText += ' ' + order['tool_from_network'];
+            order_tool_from.value = order['give_amount']
+            order_tool_to_name.innerText = order['tool_to'];
+            if(order['tool_to_network'] !== null) order_tool_to_name.innerText += ' ' + order['tool_to_network'];
+            order_tool_to.value = order['receipt_amount']
+
+            order_current_cost.value = order['current_cost'];
+            order_from_wallet.value = order['from_wallet'];
+            order_to_wallet.value = order['to_wallet'];
+            order_exchange_wallet.value = order['exchange_wallet'];
+            order_create_date.value = order['create_date'];
+
+            if(order['finish_date'] !== null) order_finish_date.value = order['finish_date'];
+            else order_finish_date.value = ''
+
+            order_ref_id.value = order['ref_id']
+            order_cash_telegram.value = order['cash_telegram']
+            order_cash_name.value = order['cash_name']
+            order_cash_station.value = order['cash_station']
+            order_cash_wallet.value = order['cash_wallet']
+        }
+
+        function loadEvents(order_id) {
+            $('.event_row').remove();
+            $.ajax({
+                url: `/orders/api/events/get?id=${order_id}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    $('.event_row').remove();
+
+                    for(let i = 0; i < msg['events'].length; i++){
+                        let tr = createBlockWithClassName('tr', 'event_row');
+                        let td_date = createBlockWithClassName('td', '', msg['events'][i]['date']);
+                        let td_event = createBlockWithClassName('td', '', msg['events'][i]['event']);
+                        tr.append(td_date, td_event);
+                        events_list.append(tr);
+                    }
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function changeStatus(e) {
+            $.ajax({
+                url: `/orders/api/status?id=${ord_id}&status=${e.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    alertify.success(msg['message'])
+                    loadEvents(ord_id);
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function changeGive(e) {
+            $.ajax({
+                url: `/orders/api/give/value?id=${ord_id}&value=${e.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    alertify.success(msg['message'])
+                    loadEvents(ord_id);
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function changeReceipt(e) {
+            $.ajax({
+                url: `/orders/api/receipt/value?id=${ord_id}&value=${e.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    alertify.success(msg['message'])
+                    loadEvents(ord_id);
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+
+        function checkOrders() {
+            let ids = [];
+            let rows = $('.check_order')
+            for(let i = 0; i < rows.length; i++){
+                if(rows[i].checked) ids.push(rows[i].getAttribute('order_id'));
+            }
+
+            if(ids.length > 0){
+                btn_change.style.display = 'block';
+            }
+            else{
+                btn_change.style.display = 'none';
+            }
+
+            return ids;
+        }
+
+
+        function changeStatuses() {
+            change_footer.style.display = 'none';
+            changeStatusContent.style.display = 'none';
+            changeStatusLoader.style.display = 'flex';
+            let data = {
+                'status': new_status.value,
+                'ids': JSON.stringify(checkOrders())
+            }
+            $.ajax({
+                url: `/orders/api/statuses`,
+                data: data,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    alertify.success(msg['message'])
+                    location.reload();
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+
+        function toAnalytics() {
+            let url = `/orders/api/get/analytics?status=${f_status.value}&date_from=${f_date_from.value}&date_to=${f_date_to.value}&tool_from=${f_tool_from.value}&tool_to=${f_tool_to.value}`
+            window.open(url, '_blank')
+        }
+
+
+        sp_btn.onclick = function () {
+            if(sp_btn.classList.contains('btn-success')){
+                sp_btn.classList.remove('btn-success');
+                sp_btn.classList.add('btn-danger');
+                hidden_content.style.display = 'block';
+            }else{
+                sp_btn.classList.add('btn-success');
+                sp_btn.classList.remove('btn-danger');
+                hidden_content.style.display = 'none';
+            }
+        }
+
+        $(window).scroll(function() {
+            if($(window).scrollTop()+$(window).height()>=$(document).height()){
+                if(loading === false) {
+                    page += 1;
+                    loadOrders()
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{
+    "min_withdraw": 504,
+    "best_minutes": 1,
+    "proxy": "",
+    "order_minutes": 30,
+    "prices_timer": false,
+    "prices_delay": 30,
+    "tech_stop": false,
+    "message": "",
+    "cash_text": "",
+    "header_message": "Будьте бдительны при написании нам в телеграмме, очень много мошенников. Все обмены совершаются только через создание заявки, телеграмм бота у нас нет.",
+    "change_rests": false,
+    "headers": "",
+    "order_id": 43200,
+    "autocommit": "5555"
+}

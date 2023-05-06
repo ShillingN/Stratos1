@@ -1,0 +1,325 @@
+<html lang="ru-RU">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../../static/client/widget.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../../static/client/css" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://stratoschange.com/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://stratoschange.com/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://stratoschange.com/favicon-16x16.png">
+    <link rel="manifest" href="https://stratoschange.com/site.webmanifest">
+    <link rel="mask-icon" href="https://stratoschange.com/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="yandex-verification" content="040a14f06fa19648">
+
+    <!-- /Yandex.Metrika counter -->
+    <link href="../../static/client/css(1)" rel="stylesheet">
+    <title>{% block title %}StratosChange обмен криптовалют | купить биткоин выгодно | купить btc за рубли{% endblock %}</title>
+    <meta name="description" content="Stratoschange.com - проверенный  обменник криптовалют. Здесь можно быстро и выгодно купить биткоин, а также обменять самые распространённые криптовалюты и эпс.">
+
+    <link href="../../static/client/bootstrap.css" rel="stylesheet">
+    <link href="../../static/client/css(2)" rel="stylesheet">
+    <link href="../../static/client/all.css" rel="stylesheet">
+    <link href="../../static/client/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/client/site.css" rel="stylesheet">
+    <link href="../../static/client/loader.css" rel="stylesheet">
+
+    <script src="../../static/client/FcCSc3oMtw" async=""></script>
+
+    <script src="https://kit.fontawesome.com/5674566d67.js" crossorigin="anonymous"></script>
+
+    <!-- alertify.js -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
+    {% block plugins %}{% endblock %}
+</head>
+<body class="">
+
+{% include 'client/header.html' %}
+
+<div class="min-height">
+
+    {% block content %}{% endblock %}
+
+</div>
+
+{% include 'client/footer.html' %}
+<div class="modal fade" data-action="message-modal" data-open="false" tabindex="-1" role="dialog" aria-labelledby="demomodallabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header custom_header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-times-circle "></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="content-modal">
+                    <p class="desc-modal text-center">
+                    </p>
+                    <button class="btn-style btn-exchange" data-dismiss="modal" aria-label="Close">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-open="modal" style="display: none; padding-left: 17px;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header custom_header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hideModals()">
+                    <i class="far fa-times-circle "></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="content-modal ">
+                    <h2 class="modal_title text-center">Вход</h2>
+                    <p class="desc-modal text-center">
+                        Заполните данные для входа в личный кабинет:
+                    </p>
+
+                    <form id="login_form" action="/login" method="post" onsubmit="authed()">
+                        <div class="form-group field-loginform-email required">
+                            <div class="title-fields">
+                                <label class="control-label" for="loginform-email">E-mail</label>
+                            </div>
+                            <input type="text" id="auth_email" class="exchange-field" name="email" aria-required="true">
+                            <p class="help-block help-block-error"></p>
+                        </div>
+                        <div class="form-group field-loginform-password required">
+                            <div class="title-fields">
+                                <label class="control-label" for="loginform-password">Пароль</label>
+                            </div>
+                            <input type="password" id="auth_password" class="exchange-field" name="password" value="" aria-required="true">
+                            <p class="help-block help-block-error"></p>
+                        </div>
+                        <div class="d-flex justify-content-between flex-wrap align-items-baseline">
+                            <div class="form-group field-loginform-rememberme">
+                                <div class="container-checkbox">
+                                    <input type="hidden" name="LoginForm[rememberMe]" value="0">
+                                    <input type="checkbox" id="loginform-rememberme" name="LoginForm[rememberMe]" value="1" checked="">
+                                    <label for="loginform-rememberme" class="color-black currency-reserve font-Sans">Запомнить меня</label>
+                                    <p class="help-block help-block-error"></p>
+                                </div>
+                            </div>
+                            <a class="reset-password color-black currency-reserve font-Sans" href="#" onclick="showRecovery()">Забыли пароль?</a>
+                        </div>
+                        <br>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn-style btn-exchange" name="login-button">Войти</button>
+                            <p class="err-block" id="auth_error"></p>
+                        </div>
+                    </form>
+                    <a class="d-block text-center" href="#" onclick="showReg()">Регистрация</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-open="modal" style="display: none; padding-left: 17px;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header custom_header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hideModals()">
+                    <i class="far fa-times-circle "></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="content-modal ">
+                    <h2 class="modal_title text-center">
+                        Регистрация
+                    </h2>
+                    <p class="desc-modal text-center">
+                        Заполните данные для регистрации:
+                    </p>
+
+                    <div class="form-group field-signupform-email required">
+                        <div class="title-fields">
+                            <label class="control-label" for="signupform-email">E-mail</label>
+                        </div>
+                        <input type="text" id="reg_email" class="exchange-field" aria-required="true">
+                        <p class="help-block help-block-error"></p>
+                    </div>
+                    <div class="form-group field-signupform-password required">
+                        <div class="title-fields">
+                            <label class="control-label" for="signupform-password">Пароль</label>
+                        </div><input type="password" id="reg_password" class="exchange-field" aria-required="true">
+                        <p class="help-block help-block-error"></p>
+                    </div>
+                    <div class="form-group field-signupform-repeat_password required">
+                        <div class="title-fields">
+                            <label class="control-label" for="signupform-repeat_password">Повторите пароль</label>
+                        </div>
+                        <input type="password" id="reg_password_two" class="exchange-field" aria-required="true">
+                        <p class="help-block help-block-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn-style btn-exchange" onclick="regus()">Регистрация</button>
+                        <p class="err-block" id="reg_error"></p>
+                    </div>
+                    <a class="d-block text-center" href="#" onclick="showAuth()">Войти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="recoveryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-open="modal" style="display: none; padding-left: 17px;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header custom_header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hideModals()">
+                    <i class="far fa-times-circle "></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="content-modal ">
+                    <h2 class="modal_title text-center">Сброс пароля</h2>
+
+                    <p class="desc-modal text-center">Пожалуйста, заполните вашу электронную почту. Ссылка для сброса пароля будет отправлена туда.</p>
+
+                    <div class="form-group field-passwordresetrequestform-email required">
+                        <div class="title-fields">
+                            <label class="control-label" for="passwordresetrequestform-email">Email</label>
+                        </div>
+                        <input type="text" id="passwordresetrequestform-email" class="exchange-field" name="PasswordResetRequestForm[email]" aria-required="true">
+                        <p class="help-block help-block-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn-style btn-exchange">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade" id="modal_back" style="display: none;"></div>
+
+<script src="../../static/client/loader.js"></script>
+<script src="../../static/client/jquery.js"></script>
+<script src="../../static/client/yii.js"></script>
+<script src="../../static/client/popper.min.js"></script>
+<script src="../../static/client/bootstrap.min.js"></script>
+<script src="../../static/client/main.js"></script>
+
+<script>
+    function createBlockWithClassName(element, class_name, innerText=null, value=null){
+        let el = document.createElement(element);
+        el.className = class_name;
+        if(innerText !== null)
+            el.innerHTML = innerText;
+        if(value !== null)
+            el.value = value;
+        return el;
+    }
+
+
+    function showAuth(){
+        hideModals();
+        modal_back.classList.add('show');
+        authModal.classList.add('show');
+    }
+
+    function showReg(){
+        hideModals();
+        modal_back.classList.add('show');
+        regModal.classList.add('show');
+    }
+
+    function showRecovery(){
+        hideModals();
+        modal_back.classList.add('show');
+        recoveryModal.classList.add('show');
+    }
+
+    function hideModals(){
+        $('.modal.show').removeClass('show');
+        modal_back.classList.remove('show');
+    }
+
+    function authed(subm=false){
+        if(subm === false) {
+            event.preventDefault()
+            event.stopImmediatePropagation()
+            event.stopPropagation(true);
+            let data = {
+                'email': auth_email.value,
+                'password': auth_password.value,
+            }
+            $.ajax({
+                url: `/v1/api/auth`,
+                method: 'post',
+                data: data,
+                sync: false,
+                success: function (msg) {
+                    if (msg['status'] === 'error') {
+                        auth_error.innerText = msg['message']
+                        auth_error.style.display = 'block'
+                        return false;
+                    }
+                    location.href = '/login'
+                },
+                error: function (e) {
+                    console.log(e);
+                    console.log(e.message);
+                    alert('Неизвестная ошибка')
+                    return false;
+                }
+            });
+        }
+        else return true;
+    }
+
+
+    function regus() {
+        if(reg_password.value !== reg_password_two.value){
+            reg_error.innerText = 'Пароли не совпадают'
+            reg_error.style.display = 'block'
+            return;
+        }
+        if(validateEmail(reg_email.value) === false){
+            reg_error.innerText = 'Введите корректный Email'
+            reg_error.style.display = 'block'
+            return;
+        }
+        if(reg_password.value.trim().length < 6){
+            reg_error.innerText = 'Слишком простой пароль'
+            reg_error.style.display = 'block'
+            return;
+        }
+        let data = {
+            'email': reg_email.value,
+            'password': reg_password.value
+        }
+
+        $.ajax({
+            url: `/v1/api/reg`,
+            method: 'post',
+            data: data,
+            success: function (msg) {
+                if(msg['status'] === 'error'){
+                    reg_error.innerText = msg['message']
+                    reg_error.style.display = 'block'
+                }
+                else{
+                    location.href = '/login'
+                }
+            },
+            error: function (e) {
+                console.log('error', e)
+            }
+        });
+    }
+</script>
+
+{% block script %}{% endblock %}
+
+</body>
+</html>

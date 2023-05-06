@@ -1,0 +1,956 @@
+{% extends 'client/base.html' %}
+{% block content %}
+    <style>
+
+        .line-gradient-text{
+
+            background: linear-gradient(90deg, #7A5CA7 25%,  #555299 100%);
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+        .cards-info-banner {
+
+            background: white;
+
+            margin-bottom: 20px;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+        }
+
+
+
+        .cards-info-banner .header {
+
+            padding: 15px 24px;
+
+            color: #fff;
+
+            text-transform: uppercase;
+
+            position: relative;
+
+            z-index: 1;
+
+            background: linear-gradient(90.91deg, #66A5D7 0.1%, #7B59A5 100%);
+
+            font-size: 16px;
+
+            text-align: center;
+
+        }
+
+
+
+        .cards-info-banner .content {
+
+            padding: 20px;
+
+        }
+
+
+
+        .text-center.line-gradient-text {
+
+            font-size: 14px;
+
+        }
+
+    </style>
+
+    <section class="screen-calculator">
+
+        <div class="border-top"></div>
+
+        <div class="background-main-calculator">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="cards-info-banner">
+                        <div class="header">Внимание!</div>
+                        <div class="content">
+                            <p class="text-center line-gradient-text">{{ setting.header_message }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-8">
+                    <div class="container-exchange mb-5">
+                        <div class="exchange-header" data-exchange="search">
+                            <div class="exchange-header-give font-title-exchange">
+                                Отдаете
+                                {#                                <div class="type-search" data-column="give">#}
+                                {#                                    <div class="active" data-type="all">Все</div>#}
+                                {#                                    <div class="" data-type="crypto">Криптовалюты</div>#}
+                                {#                                    <div class="" data-type="banks">Банки</div>#}
+                                {#                                    <div class="" data-type="wallets">Кошельки</div>#}
+                                {#                                </div>#}
+                            </div>
+
+                            <div class="exchange-header-get font-title-exchange">
+                                Получаете
+                                {#                                <div class="type-search" data-column="receive">#}
+                                {#                                    <div class="active" data-type="all">Все</div>#}
+                                {#                                    <div class="" data-type="crypto">Криптовалюты</div>#}
+                                {#                                    <div class="" data-type="banks">Банки</div>#}
+                                {#                                    <div class="" data-type="wallets">Кошельки</div>#}
+                                {#                                </div>#}
+                            </div>
+                        </div>
+
+                        <div class="exchange-content d-flex" data-exchange="exchange" data-url="/site/get-exchange-form">
+                            <div class="exchange-currency give select" data-item="give" id="mob_tools_from">
+                            </div>
+
+
+                            <div class="exchange-currency receive" data-item="receive" id="mob_tools_to">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <div class="container-exchange" data-container="form-exchange" data-title="Выберите исходную и целевую валюты">
+                        <div class="exchange-title exchange-header-form text-center font-title-exchange">
+                            Форма обмена
+                        </div>
+                        <div id="info_error" style="display: none;">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    В данный момент это выбранное направление недоступно
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exchange-content exchange-container-form" id="info_block">
+                            <div class="exchange-content-info font-Sans">
+                                <div class="currency-conversion">
+                                    <span id="c_from_value"></span> <span id="c_from_name"></span> = <span id="c_to_value"> </span> <span id="c_to_name"></span>
+                                </div>
+                                <div class="currency-reserve">
+                                    <span>Резерв</span>: <span id="rres"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 8px;">
+                                <div class="title-fields">
+                                    <label class="control-label" for="exchangeform-give_value">
+                                        Отдаете <span id="from_tool_name"></span>
+                                    </label>
+                                </div>
+                                <div class="withdrawal-range" id="from_tool_range">
+
+                                </div>
+                                <div class="currency-icon">
+                                    <input type="text" id="from_value" class="exchange-field" aria-required="true">
+                                    <img src="#" alt="" id="from_tool_icon">
+                                </div>
+                                <div class="help-block" id="hhh"></div>
+                                <div class="err-block" id="from_value_error"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="title-fields">
+                                    <label class="control-label" for="exchangeform-give_value">
+                                        Получаете <span id="to_tool_name"></span>
+                                    </label>
+                                </div>
+                                <div class="currency-icon">
+                                    <input type="text" id="to_value" class="exchange-field" aria-required="true">
+                                    <img src="#" alt="" id="to_tool_icon">
+                                </div>
+                                <div class="help-block"></div>
+                                <div class="err-block" id="to_value_error"></div>
+                            </div>
+
+                            <div class="form-group" id="fiat_block" style="display: none">
+                                <div class="title-fields">
+                                    <label class="control-label" for="address_pay">
+                                        <span id="address_from"></span>
+                                    </label>
+                                </div>
+                                <div class="currency-icon">
+                                    <input type="text" id="address_pay" class="exchange-field" aria-required="true">
+                                </div>
+                                <div class="help-block"></div>
+                                <div class="err-block" id="address_pay_error">Заполните это поле</div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="title-fields">
+                                    <label class="control-label" for="address_receive">
+                                        <span id="address_to"></span>
+                                    </label>
+                                </div>
+                                <div class="currency-icon">
+                                    <input type="text" id="address_receive" class="exchange-field" aria-required="true">
+                                </div>
+                                <div class="help-block"></div>
+                                <div class="err-block" id='address_receive_error'>Заполните это поле</div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="title-fields">
+                                    <label class="control-label" for="email_value">
+                                        Email
+                                    </label>
+                                </div>
+                                <div class="currency-icon">
+                                    <input type="email" id="email_value" class="exchange-field" aria-required="true">
+                                </div>
+                                <div class="help-block"></div>
+                                <div class="err-block" id="email_error">Укажите действительный Email</div>
+                            </div>
+
+                            <div class="form-group" id="name_block" style="display: none">
+                                <div class="title-fields">
+                                    <label class="control-label" for="name_tag">
+                                        ФИО
+                                    </label>
+                                </div>
+                                <div class="currency-icon">
+                                    <input type="text" id="name_tag" class="exchange-field" aria-required="true">
+                                </div>
+                                <div class="help-block"></div>
+                                <div class="err-block" id="name_tag_error">Заполните это поле</div>
+                            </div>
+
+                            <div id="nal_block" style="display: none">
+                                <div class="form-group">
+                                    <div class="title-fields">
+                                        <label class="control-label" for="tg_tag">
+                                            Telegram
+                                        </label>
+                                    </div>
+                                    <div class="currency-icon">
+                                        <input type="text" id="tg_tag" class="exchange-field" aria-required="true">
+                                    </div>
+                                    <div class="help-block"></div>
+                                    <div class="err-block" id="tg_tag_error">Заполните это поле</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="title-fields">
+                                        <label class="control-label" for="station_tag">
+                                            Телефон
+                                        </label>
+                                    </div>
+                                    <div class="currency-icon">
+                                        <input type="text" id="station_tag" class="exchange-field" aria-required="true">
+                                    </div>
+                                    <div class="help-block"></div>
+                                    <div class="err-block" id="station_tag_error">Заполните это поле</div>
+                                </div>
+
+                                <div class="form-group" id="c_w" style="display: none">
+                                    <div class="title-fields">
+                                        <label class="control-label" for="cash_wallet">
+                                            Кошелёк
+                                        </label>
+                                    </div>
+                                    <div class="currency-icon">
+                                        <input type="text" id="cash_wallet" class="exchange-field" aria-required="true">
+                                    </div>
+                                    <div class="help-block"></div>
+                                    <div class="err-block" id="cash_wallet_error"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group field-exchangeform-rules required">
+                                <div class="container-checkbox">
+                                    <input type="hidden" name="LoginForm[rememberMe]" value="0">
+                                    <input type="checkbox" id="accept_r" name="LoginForm[rememberMe]" value="1" checked="">
+                                    <label for="accept_r" class="color-black currency-reserve font-Sans">Я ознакомлен и согласен с <a href="/rules">правилами обмена</a></label>
+                                </div>
+                            </div>
+                            <button class="btn-style btn-exchange" data-action="exchangeButton" onclick="createExchange()">Начать обмен</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen-advantages">
+        <div class="group-circle left">
+            <img src="../../static/client/Group-3.png" alt="">
+        </div>
+
+        <div class="group-circle right">
+            <img src="../../static/client/Group-3.png" alt="">
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row-advantages d-flex justify-content-center justify-content-sm-between  flex-wrap ">
+                        <div class="container-advantages square-back-1">
+                            <div class="header-advantages">
+                                <img src="../../static/client/001-diagram.png" alt="">
+                            </div>
+                            <div class="content-advantages">
+                                <p>Лучшие курсы на рынке</p>
+                            </div>
+                        </div>
+
+                        <div class="container-advantages square-back-2">
+                            <div class="header-advantages">
+                                <img src="../../static/client/002-clock.png" alt="">
+                            </div>
+
+                            <div class="content-advantages">
+                                <p>5-60 минут обработка операции</p>
+                            </div>
+
+                        </div>
+
+                        <div class="container-advantages square-back-3">
+                            <div class="header-advantages">
+                                <img src="../../static/client/003-money.png" alt="">
+                            </div>
+
+                            <div class="content-advantages">
+                                <p>Большие резервы</p>
+                            </div>
+
+                        </div>
+
+                        <div class="container-advantages square-back-4">
+                            <div class="header-advantages">
+                                <img src="../../static/client/Component.png" alt="">
+                            </div>
+
+                            <div class="content-advantages">
+                                <p>Поддержка на связи ежедневно с 10 до 23</p>
+                            </div>
+
+                        </div>
+
+                        <div class="container-advantages square-back-5">
+                            <div class="header-advantages">
+                                <img src="../../static/client/005-goal.png" alt="">
+                            </div>
+
+                            <div class="content-advantages">
+                                <p>Большая цель</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen-reserves">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="h2  mb-5">Наши резервы</h2>
+                </div>
+            </div>
+
+            <div class="row" id="reserves">
+                <div class="col-12 col-md-6 col-lg-4" id="reserve_pattern" style="display: none">
+                    <div class="container-reserves">
+                        <div class="content-reserves d-flex justify-content-between flex-wrap">
+                            <div class="item-reserves">
+                                <img src="../../static/client/8cNrKQwVdqSZifuqFRwRzgXBn.png" alt="">
+                                <span class="name-currency">Bitcoin BTC</span>
+                            </div>
+                            <span class="rate">1.3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        initLoader();
+
+        let selected_from = null;
+        let selected_to = null;
+        let pair = null;
+        let loaded = 0;
+        let reserve_ids = [];
+        let first_loaded = false;
+
+
+        let ref_id = '{{ ref_id }}';
+        {% if tool_from != None and tool_to != None %}
+            let preload_from = {{ tool_from }};
+            let preload_to = {{ tool_to }};
+        {% else %}
+            let preload_from = null;
+            let preload_to = null;
+        {% endif %}
+
+        loadTools('from');
+        loadTools('to');
+
+        function loadTools(direction) {
+            $.ajax({
+                url: `/v1/api/tools/${direction}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alert('Ошибка загрузки ' + direction)
+                        return;
+                    }
+                    drawTools(msg['tools'], direction);
+                    loaded += 1;
+                    if(direction === 'from'){
+                        if(preload_from === null) $('.tool_row.from')[0].click();
+                        else{
+                            $('#tool_from_' + preload_from).click();
+                            setTimeout(function () {
+                                $('#tool_to_' + preload_to).click();
+                            }, 200)
+                        }
+                        setInterval(updateCost, 30000);
+                    }
+                },
+                error: function () {
+                }
+            });
+        }
+
+        function drawTools(tools, direction) {
+            $(`.tool_row.` + direction).remove();
+
+            for(let i = 0; i < tools.length; i++){
+                let tool_box = drawTool(tools[i], direction);
+                if(direction === 'from') mob_tools_from.append(tool_box);
+                if(direction === 'to') mob_tools_to.append(tool_box);
+            }
+        }
+
+
+        function drawTool(tool, direction) {
+            drawBank(tool);
+            let row = createBlockWithClassName('div', `exchange-item active tool_row ${direction}`)
+            let logo = createBlockWithClassName('img', `tool_img`);
+            let name = createBlockWithClassName('span', `tool_name`);
+
+            row.setAttribute('tool_name', tool['name']);
+            row.setAttribute('direction', direction);
+            row.id = `tool_${direction}_${tool['id']}`;
+
+            row.onclick = function (){
+                selectTool(tool, direction, row);
+            }
+
+            logo.src = `../../static/icons/${tool['name']}.png`;
+            name.innerText = tool['nickname']
+            row.append(logo, name);
+
+            return row;
+        }
+
+        function selectTool(tool, direction, tool_box) {
+            if(direction === 'from') {
+                selected_from = tool;
+
+                if(tool['cost_link'].length > 0) from_tool_name.innerText = tool['cost_link']
+                else from_tool_name.innerText = tool['name']
+
+                from_tool_name.innerText = `${selected_from['nickname']}`
+                from_tool_icon.src = `../../static/icons/${selected_from['name']}.png`
+
+                $('.tool_row.from.currency').removeClass('currency');
+                tool_box.classList.add('currency');
+
+                let network = tool['network'];
+                if (network === null) network = '';
+                let data = {
+                    'tool': tool['name'],
+                    'network': network,
+                    'direction': direction
+                }
+                $.ajax({
+                    url: `/v1/api/exchange/tool`,
+                    data: data,
+                    success: function (msg) {
+                        if (msg['status'] !== 'ok') {
+                            alert('Ошибка загрузки ' + direction)
+                            return;
+                        }
+
+                        let active = false;
+                        let need_tools = msg['tools'];
+                        let tools_boxes = $('.tool_row.to');
+                        for (let i = 0; i < tools_boxes.length; i++) {
+                            let name = tools_boxes[i].getAttribute('tool_name');
+                            let t_id = String(tools_boxes[i].id).split('_')[2]
+                            let check = findToolInListById(need_tools, Number(t_id));
+                            if (check === null) {
+                                tools_boxes[i].classList.remove('active');
+                                tools_boxes[i].onclick = null;
+                            } else {
+                                tools_boxes[i].classList.add('active');
+                                tools_boxes[i].onclick = function () {
+                                    selectTool(check, 'to', tools_boxes[i]);
+                                };
+                                if (active === false) {
+                                    selectTool(check, 'to', tools_boxes[i]);
+                                    active = true;
+                                }
+                            }
+                        }
+                    },
+                    error: function () {
+                    }
+                });
+            }
+            else{
+                selected_to = tool;
+
+                if(tool['cost_link'].length > 0) to_tool_name.innerText = tool['cost_link']
+                else to_tool_name.innerText = tool['name']
+
+                to_tool_name.innerText = `${selected_to['nickname']}`
+                to_tool_icon.src = `../../static/icons/${selected_to['name']}.png`
+
+                $('.tool_row.to.currency').removeClass('currency');
+                tool_box.classList.add('currency');
+
+                let data = {
+                    'tool_from': selected_from['id'],
+                    'tool_to': selected_to['id'],
+                }
+                $.ajax({
+                    url: `/v1/api/exchange/info`,
+                    data: data,
+                    success: function (msg) {
+                        if (msg['status'] !== 'ok') {
+                            alert('Ошибка загрузки ' + direction)
+                            return;
+                        }
+
+                        pair = msg['pair'];
+                        selectPair();
+                    },
+                    error: function () {
+                    }
+                });
+            }
+        }
+
+        function findToolInListById(tools, id) {
+            let result = null;
+            for(let i = 0; i < tools.length; i++){
+                if(tools[i]['id'] === id){
+                    result = tools[i];
+                    break
+                }
+            }
+            return result
+        }
+
+        function selectPair() {
+            if(!first_loaded){
+                first_loaded = true;
+                removeLoader(true)
+            }
+            if(pair['status'] === false){
+                info_error.style.display = 'block';
+                info_block.style.display = 'none';
+            }
+            else{
+                info_error.style.display = 'none';
+                info_block.style.display = 'block';
+            }
+
+            let cost = Number(pair['cost'].toFixed(2))
+            if(pair['t_from']['cost_link'].length === 0){
+                c_from_value.innerText = '1'
+                c_from_name.innerText = pair['t_from']['name'];
+
+                c_to_value.innerText = cost.toLocaleString("ru-RU")
+                c_to_name.innerText = pair['t_to']['cost_link'];
+                fiat_block.style.display = 'none';
+            }
+            else{
+                c_from_value.innerText = '1'
+                c_from_name.innerText = pair['t_to']['name'];
+
+                c_to_value.innerText = cost.toLocaleString("ru-RU")
+                c_to_name.innerText = pair['t_from']['cost_link'];
+                fiat_block.style.display = 'block';
+            }
+
+
+            let curr = pair['t_to']['name'];
+            if(pair['t_to']['cost_link'].length > 0) curr = pair['t_to']['cost_link']
+            rres.innerText = `${pair['t_to']['reserve']} ${curr}`
+
+            from_value.value = pair['min_from'];
+            from_value.step = pair['t_from']['rounded_str'].substr(0, pair['t_from']['rounded_str'].length - 1) + '1';
+            to_value.value = pair['min_from_local'];
+            to_value.step = pair['t_to']['rounded_str'].substr(0, pair['t_to']['rounded_str'].length - 1) + '1';
+
+            //r_from_value.innerText = pair['min_from'];
+            //r_to_value.innerText = pair['min_from_local'];
+
+
+            let label_from = address_from;
+            let label_to = address_to;
+
+            label_from.innerText = pair['t_from']['placeholder_from']
+            label_to.innerText = pair['t_to']['placeholder_to']
+
+            if(pair['t_to']['is_cash'] || pair['t_from']['is_cash']){
+                nal_block.style.display = 'block';
+            }
+            else{
+                $(".start_show").css('display', 'block');
+                nal_block.style.display = 'none';
+                address_to.style.display = 'block';
+            }
+            if(pair['t_from']['is_cash'] && !pair['t_to']['is_cash']) c_w.style.display = 'block';
+            else c_w.style.display = 'none';
+
+            if(pair['t_from']['show_fio'] === true || pair['t_to']['show_fio'] === true){
+                name_block.style.display = 'block';
+            }
+            else{
+                name_block.style.display = 'none';
+            }
+
+            hhh.innerText = `От ${pair['min_from']} ${pair['t_from']['name']} до ${pair['max_from']} ${pair['t_from']['name']}`
+            //setMasks();
+        }
+
+
+        function drawBank(tool){
+            if(reserve_ids.indexOf(tool['id']) !== -1) return;
+            reserve_ids.push(tool['id'])
+
+            let box = document.getElementById('reserve_pattern').cloneNode(true);
+            let img = box.getElementsByTagName('img')[0];
+            let name = box.getElementsByTagName('span')[0];
+            let value = box.getElementsByTagName('span')[1];
+
+            img.src = `../../static/icons/${tool['name']}.png`;
+            name.innerText = `${tool['nickname']}`
+            value.innerText = tool['reserve'];
+
+            box.id = '';
+            box.style.display = 'block';
+
+            reserves.append(box);
+        }
+
+
+        from_value.oninput = function () {
+            let v = Number(from_value.value);
+
+            if(v < pair['min_from']){
+                let currency = pair['t_from']['name'];
+                if(pair['t_from']['cost_link'].length > 0) currency = pair['t_from']['cost_link'];
+                from_value_error.innerText = `Минимальная сумма обмена ${pair['min_from']} ${currency}`;
+                from_value_error.style.display = 'block';
+                return;
+            }
+            else{
+                let error = from_value_error;
+                error.style.display = 'none';
+            }
+
+            if(v > pair['max_from']){
+                let currency = pair['t_from']['name'];
+                if(pair['t_from']['cost_link'].length > 0) currency = pair['t_from']['cost_link'];
+                from_value_error.innerText = `Максимальная сумма обмена ${pair['max_from']} ${currency}`;
+                from_value_error.style.display = 'block';
+                return;
+            }
+            else{
+                let error = from_value_error;
+                error.style.display = 'none';
+            }
+
+            let v_to = 1;
+            if(pair['t_from']['cost_link'].length === 0){
+                v_to = v * pair['cost'];
+            }
+            else{
+                v_to = v * (1 / pair['cost']);
+            }
+
+            let decimal_count = 0;
+            try {
+                decimal_count = String(pair['t_to']['rounded_str']).split('.')[1].length;
+            }
+            catch (e) {
+
+            }
+            to_value.value = v_to.toFixed(decimal_count);
+        }
+
+        to_value.oninput = function () {
+            let vv = Number(to_value.value);
+
+            let v = 0;
+            if(pair['t_from']['cost_link'].length === 0)
+                v = Number(1 / pair['cost'] * vv)
+            else
+                v = Number(vv * pair['cost'])
+
+            let decimal_count = 0;
+            try {
+                decimal_count = String(pair['t_from']['rounded_str']).split('.')[1].length;
+            }
+            catch (e) {
+
+            }
+
+            v = Number(v.toFixed(decimal_count))
+
+            if(v < pair['min_from']){
+                let currency = pair['t_from']['name'];
+                if(pair['t_from']['cost_link'].length > 0) currency = pair['t_from']['cost_link'];
+                to_value_error.innerText = `Минимальная сумма обмена ${pair['min_from']} ${currency}`;
+                to_value_error.style.display = 'block';
+                return;
+            }
+            else{
+                let error = to_value_error;
+                error.style.display = 'none';
+            }
+
+            if(v > pair['max_from']){
+                let currency = pair['t_from']['name'];
+                if(pair['t_from']['cost_link'].length > 0) currency = pair['t_from']['cost_link'];
+                to_value_error.innerText = `Максимальная сумма обмена ${pair['max_from']} ${currency}`;
+                to_value_error.style.display = 'block';
+                return;
+            }
+            else{
+                let error = value_from_error;
+                error.style.display = 'none';
+            }
+
+            if(Number(vv) > pair['t_to']['reserve']){
+                let currency = pair['t_from']['name'];
+                if(pair['t_to']['cost_link'].length > 0) currency = pair['t_to']['cost_link'];
+                to_value_error.innerHTML = `Недостаточно резервов для валюты. Доступная сумма: ${pair['t_to']['reserve']} ${currency}.<br>Напишите в чат, если хотите обменять свыше порога резерва`;
+                to_value_error.style.display = 'block';
+                return;
+            }
+            else{
+                let error = value_to_error;
+                error.style.display = 'none';
+            }
+
+            from_value.value = v;
+        }
+
+
+        function validateEmail(email) {
+            var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+            return re.test(String(email).toLowerCase());
+        }
+
+
+        function createExchange() {
+            if(accept_r.checked === false) return;
+
+            let errors = 0;
+
+            if(Number(from_value.value) < pair['min_from']){
+                let currency = pair['t_from']['name'];
+                if(pair['t_from']['cost_link'].length > 0) currency = pair['t_from']['cost_link'];
+                from_value_error.innerText = `Минимальная сумма обмена ${pair['min_from']} ${currency}`;
+                from_value_error.style.display = 'block';
+                setTimeout(function (){from_value_error.style.display = 'none'}, 3000);
+                errors += 1
+            }
+            else{
+                let error = from_value_error;
+                error.style.display = 'none';
+            }
+
+            if(Number(from_value.value) > pair['max_from']){
+                let currency = pair['t_from']['name'];
+                if(pair['t_from']['cost_link'].length > 0) currency = pair['t_from']['cost_link'];
+                from_value_error.innerText = `Максимальная сумма обмена ${pair['max_from']} ${currency}`;
+                from_value_error.style.display = 'block';
+                setTimeout(function (){from_value_error.style.display = 'none'}, 3000);
+                errors += 1
+            }
+            else{
+                let error = from_value_error;
+                error.style.display = 'none';
+            }
+
+            if(Number(to_value.value) > pair['t_to']['reserve']){
+                let currency = pair['t_from']['name'];
+                if(pair['t_to']['cost_link'].length > 0) currency = pair['t_to']['cost_link'];
+                to_value_error.innerHTML = `Недостаточно резервов для валюты. Доступная сумма: ${pair['t_to']['reserve']} ${currency}.<br>Напишите в чат, если хотите обменять свыше порога резерва`;
+                to_value_error.style.display = 'block';
+                setTimeout(function (){error.style.display = 'none'}, 3000);
+                errors += 1
+            }
+            else{
+                let error = to_value_error;
+                error.style.display = 'none';
+            }
+
+            if(!validateEmail(email_value.value) && (pair['t_to']['is_cash'] === false && pair['t_from']['is_cash'] === false)){
+                email_error.style.display = 'block';
+
+                setTimeout(function (){email_error.style.display = 'none'}, 3000);
+                errors += 1
+            }
+
+            if(pair['t_from']['show_fio'] === true || pair['t_to']['show_fio'] === true){
+                if(name_tag.value.length === 0){
+                    name_tag_error.style.display = 'block';
+
+                    setTimeout(function (){name_tag_error.style.display = 'none'}, 3000);
+                    errors += 1
+                }
+            }
+            if(pair['t_from']['is_cash'] && pair['t_to']['is_cash'] === false) {
+                if(cash_wallet.value.length === 0){
+                    cash_wallet_error.style.display = 'block';
+
+                    setTimeout(function (){cash_wallet_error.style.display = 'none'}, 3000);
+                    errors += 1
+                }
+            }
+            if(pair['t_to']['is_cash'] || pair['t_from']['is_cash']){
+                if(station_tag.value.length === 0){
+                    station_tag_error.style.display = 'block';
+
+                    setTimeout(function (){station_tag_error.style.display = 'none'}, 3000);
+                    errors += 1
+                }
+                if(tg_tag.value.length === 0){
+                    tg_tag_error.style.display = 'block';
+
+                    setTimeout(function (){tg_tag_error.style.display = 'none'}, 3000);
+                    errors += 1
+                }
+            }
+            else{
+                if(address_pay.value.length === 0 && pair['t_from']['cost_link'].length > 0){
+                    address_pay_error.style.display = 'block';
+
+                    setTimeout(function (){address_pay_error.style.display = 'none'}, 3000);
+                    errors += 1
+                }
+
+                if(address_receive.value.length === 0){
+                    address_receive_error.style.display = 'block';
+
+                    setTimeout(function (){address_receive_error.style.display = 'none'}, 3000);
+                    errors += 1
+                }
+            }
+
+            if(errors > 0) return;
+
+            let data = {
+                'tool_from': pair['t_from']['id'],
+                'tool_to': pair['t_to']['id'],
+                'email': email_value.value,
+                'give_amount': from_value.value,
+                'to_wallet': address_receive.value,
+                'ref_id': ref_id,
+                'create_token': '{{ create_token }}'
+            }
+            if(pair['t_to']['is_cash'] === false && pair['t_from']['is_cash'] === false)
+            {
+                if(pair['t_from']['cost_link'].length > 0)
+                    data['from_wallet'] = address_pay.value
+            }
+            else{
+                data['cash_station'] = station_tag.value;
+                data['cash_telegram'] = tg_tag.value;
+            }
+
+            if(pair['t_from']['show_fio'] === true || pair['t_to']['show_fio'] === true){
+                data['cash_name'] = name_tag.value;
+            }
+
+            if(pair['t_from']['us_cash'] === true || pair['t_to']['is_cash'] === false){
+                data['cash_wallet'] = cash_wallet.value;
+            }
+
+            $.ajax({
+                url: `/v1/api/exchange/create`,
+                data: data,
+                success: function (msg) {
+                    console.log(msg);
+                    if(msg['status'] !== 'ok'){
+                        alert(msg['message'])
+                        return;
+                    }
+                    if(msg['need_verification']){
+                        showVerification(1)
+                        return;
+                    }
+                    if(msg['order']['payment_url'] === null)
+                        location.href = '/order/' + msg['order']['secret_key']
+                    else
+                        location.href = msg['order']['payment_url']
+                },
+                error: function () {
+                }
+            });
+        }
+
+
+        function updateCost() {
+            let data = {
+                'tool_from': selected_from['id'],
+                'tool_to': selected_to['id'],
+            }
+            $.ajax({
+                url: `/v1/api/exchange/info`,
+                data: data,
+                success: function (msg) {
+                    if (msg['status'] !== 'ok') {
+                        alert('Ошибка загрузки ' + direction)
+                        return;
+                    }
+
+                    pair = msg['pair'];
+                },
+                error: function () {
+                }
+            });
+        }
+    </script>
+{% endblock %}

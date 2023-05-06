@@ -1,0 +1,177 @@
+{% extends 'client/base.html' %}
+
+{% block plugins %}
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+{% endblock %}
+
+{% block content %}
+
+    <section class="back-page">
+        <div class="group-circle  bottom">
+            <img src="../../static/client/Group-2.png" alt="">
+        </div>
+        <div class="background-header"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="h1">Опции</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-page">
+        <div class="container">
+            <div class="row">
+                {% include 'client/client_menu.html' %}
+                <div class="col-12 col-lg-8 col-xl-8">
+                    <div class="container-exchange mb-5">
+                        <div class="exchange-header flex-wrap">
+                            <div class="exchange-header-give font-title-exchange justify-content-start  header-options">
+                                Смена пароля
+                            </div>
+                        </div>
+                        <div class="exchange-content exchange-container-form">
+                            <div class="content-contact">
+                                <div class=" content-options">
+                                    <div class="form-group">
+                                        <div class="title-fields">
+                                            <label class="control-label" for="current_password">
+                                                Текущий пароль
+                                            </label>
+                                        </div>
+                                        <div class="currency-icon">
+                                            <input type="password" id="current_password" class="exchange-field" aria-required="true">
+                                        </div>
+                                        <div class="help-block"></div>
+                                        <div class="err-block" id="station_tag_error">Заполните это поле</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="title-fields">
+                                            <label class="control-label" for="new_password">
+                                                Новый пароль
+                                            </label>
+                                        </div>
+                                        <div class="currency-icon">
+                                            <input type="password" id="new_password" class="exchange-field" aria-required="true">
+                                        </div>
+                                        <div class="help-block"></div>
+                                        <div class="err-block" id="station_tag_error">Заполните это поле</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="title-fields">
+                                            <label class="control-label" for="new_password2">
+                                                Повторите новый пароль
+                                            </label>
+                                        </div>
+                                        <div class="currency-icon">
+                                            <input type="password" id="new_password2" class="exchange-field" aria-required="true">
+                                        </div>
+                                        <div class="help-block"></div>
+                                        <div class="err-block" id="station_tag_error">Заполните это поле</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end w-100">
+                                    <button class="btn-style btn-exchange"  onclick="changePassword()">Изменить пароль</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        function copy(wallet){
+            navigator.clipboard.writeText(wallet)
+                .then(() => {
+                    // Получилось!
+                })
+                .catch(err => {
+                    console.log(err);
+                    alert('Ошибка')
+                });
+        }
+
+        tippy('.copy', {
+            content: 'Скопировано',
+            trigger: 'click',
+        });
+
+
+        function changePassword(){
+            if(current_password.value.length < 3){
+                alertify.alert('Ошибка', 'Введите старый пароль')
+                return;
+            }
+            if(new_password.value.length < 3){
+                alertify.alert('Ошибка', 'Новый пароль слишком простой')
+                return;
+            }
+            if(new_password2.value !== new_password.value){
+                alertify.alert('Ошибка', 'Введенные пароли не совпадают')
+                return;
+            }
+
+            let data = {
+                'new_pas': new_password.value,
+                'old_pas': current_password.value,
+            }
+
+            $.ajax({
+                url: `/v1/api/change_pass`,
+                method: 'get',
+                data: data,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message'])
+                        return
+                    }
+                    alertify.alert('Ошибка', msg['message'], function () {
+                        location.reload()
+                    })
+                },
+                error: function (e) {
+                    console.log('error', e)
+                }
+            });
+        }
+
+
+        function createOut(){
+            let v = Number(out_value.value);
+
+            let data = {
+                'amount': v,
+                'tool': 'RUB',
+                'wallet': receiver_wallet.value,
+            }
+
+            $.ajax({
+                url: `/withdraws/api/create`,
+                method: 'get',
+                data: data,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    alertify.alert('Заявка на вывод', 'Заявка на вывод успешно создана и отправлена на модерацию.')
+                },
+                error: function (e) {
+                    console.log('error', e)
+                }
+            });
+        }
+
+    </script>
+{% endblock %}

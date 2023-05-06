@@ -1,0 +1,176 @@
+{% extends 'client/base.html' %}
+
+{% block plugins %}
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="back-page">
+        <div class="group-circle  bottom">
+            <img src="../../static/client/Group-2.png" alt="">
+
+        </div>
+        <div class="background-header"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="h1">Партнерская программа</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-page">
+        <div class="container">
+            <div class="row">
+                {% include 'client/client_menu.html' %}
+                <div class="col-12 col-lg-8 col-xl-8">
+                    <div class="container-exchange mb-5">
+                        <div class="exchange-header">
+                            <div class="exchange-header-give font-title-exchange title-contact justify-content-start">
+                                Реферальная программа
+                            </div>
+                        </div>
+                        <div class="exchange-content exchange-container-form">
+                            <div class="referal-item">
+                                <span data-copy="parent"><a href="/?ref_id={{ user.code }}">https://stratoschange.ru?ref_id={{ user.code }}</a></span>
+                                <span>
+                                    <i class="far fa-copy copy" onclick="copy('https://stratoschange.ru?ref_id={{ user.code }}')"></i>
+                                </span>
+                            </div>
+                            <div class="referal-item">
+                                <span>Реферальные начисления</span>
+                                <span>{{ user.ref_balance }} RUB</span>
+                            </div>
+                            <div class="referal-item">
+                                <span>Реферальный процент</span>
+                                <span>{{ user.ref_percent }} %</span>
+                            </div>
+                            <div class="referal-item">
+                                <span>Рефералы</span>
+                                <span>0</span>
+                            </div>
+                            <div class="referal-item upper bold mt-5 ">
+                                HTML код для добавления на сайт или форум:
+                            </div>
+                            <div class="referal-item">
+                                <span data-copy="parent"><a href='/?ref_id={{ user.code }}'>Обмен валют</a></span>
+                                <span>
+                                    <i class="far fa-copy copy" onclick="copy(`<a href='https://stratoschange.ru/?ref_id={{ user.code }}'>Обмен валют</a>`)"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-exchange mb-5">
+                        <div class="exchange-header">
+                            <div class="exchange-header-give font-title-exchange title-contact justify-content-start">
+                                Вывод реферальных средств
+                            </div>
+                        </div>
+                        <div class="exchange-content exchange-container-form">
+
+                            <div class="form-group">
+                                <div class="title-fields">
+                                    <label class="control-label" for="out_value">
+                                        Сумма вывода
+                                    </label>
+                                </div>
+                                <div class="currency-icon">
+                                    <input type="number" id="out_value" class="exchange-field" aria-required="true">
+                                </div>
+                                <div class="help-block"></div>
+                                <div class="err-block" id="station_tag_error">Заполните это поле</div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="title-fields">
+                                    <label class="control-label" for="out_type">
+                                        Способ вывода
+                                    </label>
+                                </div>
+                                <div class="currency-icon">
+                                    <select class="exchange-field" required id="out_type">
+                                        <option value="Тинькофф" class="out_tool">Тинькофф</option>
+                                        <option value="Альфа Банк" class="out_tool">Альфа Банк</option>
+                                        <option value="Сбербанк" class="out_tool">Сбербанк</option>
+                                        <option value="Киви" class="out_tool">Киви</option>
+                                        <option value="Visa Mastercard" class="out_tool">Visa/Mastercard</option>
+                                    </select>
+                                </div>
+                                <div class="help-block"></div>
+                                <div class="err-block" id="station_tag_error">Заполните это поле</div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="title-fields">
+                                    <label class="control-label" for="receiver_wallet">
+                                        Реквизиты
+                                    </label>
+                                </div>
+                                <div class="currency-icon">
+                                    <input type="text" id="receiver_wallet" class="exchange-field" aria-required="true">
+                                </div>
+                                <div class="help-block"></div>
+                                <div class="err-block" id="station_tag_error">Заполните это поле</div>
+                            </div>
+
+                            <button class="btn-style btn-exchange" data-action="exchangeButton" onclick="createOut()">Создать заявку</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        function copy(wallet){
+            navigator.clipboard.writeText(wallet)
+                .then(() => {
+                    // Получилось!
+                })
+                .catch(err => {
+                    console.log(err);
+                    alert('Ошибка')
+                });
+        }
+
+        tippy('.copy', {
+            content: 'Скопировано',
+            trigger: 'click',
+        });
+
+
+        function createOut(){
+            let v = Number(out_value.value);
+
+            let data = {
+                'amount': v,
+                'tool': 'RUB',
+                'wallet': receiver_wallet.value,
+            }
+
+            $.ajax({
+                url: `/withdraws/api/create`,
+                method: 'get',
+                data: data,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    alertify.alert('Заявка на вывод', 'Заявка на вывод успешно создана и отправлена на модерацию.')
+                },
+                error: function (e) {
+                    console.log('error', e)
+                }
+            });
+        }
+
+    </script>
+{% endblock %}

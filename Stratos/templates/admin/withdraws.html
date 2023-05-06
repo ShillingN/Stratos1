@@ -1,0 +1,162 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Заявки на вывод | StratosChange{% endblock %}
+
+{% block content %}
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Заявки на вывод | StratosChange</div>
+    </div>
+    <!--end breadcrumb-->
+    <hr/>
+    <div class="card">
+    <div class="card-body">
+        <div class="card-body">
+            <div id="btn_containers" style="display: flex">
+                <div id="pages"></div>
+                <div id="search"></div>
+            </div>
+            <div class="table-responsive">
+                <table id="table" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Дата</th>
+                        <th>Email</th>
+                        <th>Карта/кошелёк</th>
+                        <th>Сумма</th>
+                        <th>Сумма ₽</th>
+                        <th>Курс</th>
+                        <th>Статус</th>
+                        <th>Комментарий</th>
+                        <th>Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for withdraw in withdraws %}
+                        <tr>
+                            <td>{{ withdraw.id }}</td>
+                            <td>{{ withdraw.create_date.strftime('%d.%m.%Y %H:%M') }}</td>
+                            <td>{{ withdraw.user_email }}</td>
+                            <td>{{ withdraw.wallet }}</td>
+                            <td>{{ withdraw.amount }} {{ withdraw.tool_name }}</td>
+                            <td>{{ withdraw.amount_rub }} ₽</td>
+                            <td>{{ withdraw.cost }} ₽ = 1 {{ withdraw.tool_name }}</td>
+                            <td>
+                                {% if withdraw.status == -1 %}
+                                    Отклонено
+                                {% elif withdraw.status == 0 %}
+                                    Ожидает рассмотрения
+                                {% elif withdraw.status == 1 %}
+                                    Одобрено
+                                {% endif %}
+                            </td>
+                            <td>{% if withdraw.comment != None %}{{ withdraw.comment }}{% endif %}</td>
+                            <td>
+                                {% if withdraw.status == 0 %}
+                                    <button class="btn btn-sm btn-success" style="margin-left: 8px;" onclick="acceptVerify({{ withdraw.id }})">Одобрить</button>
+                                    <button class="btn btn-sm btn-danger" style="margin-left: 8px;" onclick="cancelVerify({{ withdraw.id }})">Отклонить</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        let first = true;
+
+        $(document).ready(function() {
+            $('#table').DataTable({aaSorting: [[ 0, "desc" ]]});
+
+            while (search.firstChild) {
+                search.removeChild(search.firstChild);
+            }
+
+            while (pages.firstChild) {
+                pages.removeChild(pages.firstChild);
+            }
+
+            $('input[type=search]').appendTo('#search').attr('placeholder', 'Поиск');
+            $('select[name=table_length]').appendTo('#pages')
+            $('#table_length').css('display', 'none')
+            $('#table_filter').css('display', 'none')
+
+            let s = $('input[type=search]')[0];
+            s.onchange = function () {
+                saveQuery(s, 'withdraws')
+            }
+
+            if(first){
+                s.value = '{{ query }}'
+                let event = new Event('input');
+                s.dispatchEvent(event);
+                first = false;
+            }
+        } );
+
+        function acceptVerify(id) {
+            alertify.confirm('Подтверждение', 'Вы уверены, что хотите подтвердить вывод?',
+                function () {
+                    let data = {
+                        'id': id,
+                        'status': 1,
+                        'comment': '',
+                    }
+                    $.ajax({
+                        url: `/withdraws/api/set`,
+                        data: data,
+                        success: function (msg) {
+                            if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                            alertify.success(msg['message'])
+                            location.reload();
+                        },
+                        error: function () {
+                            error('Неизвестная серверная ошибка')
+                        }
+                    });
+                },
+                function () {
+
+                })
+        }
+
+        function cancelVerify(id) {
+            alertify.prompt('Подтверждение', "Введите причину отклонения", "",
+                function(evt, value ){
+                    let data = {
+                        'id': id,
+                        'status': -1,
+                        'comment': value,
+                    }
+                    $.ajax({
+                        url: `/withdraws/api/set`,
+                        data: data,
+                        success: function (msg) {
+                            if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                            alertify.success(msg['message'])
+                            location.reload();
+                        },
+                        error: function () {
+                            error('Неизвестная серверная ошибка')
+                        }
+                    });
+                },
+                function(){
+                })
+            ;
+        }
+
+    </script>
+{% endblock %}

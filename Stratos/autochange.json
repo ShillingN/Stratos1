@@ -1,0 +1,11 @@
+{
+    "status": false,
+    "start_hour": 10,
+    "end_hour": 23,
+    "min_minutes": 3,
+    "max_minutes": 7,
+    "min_value": 3000,
+    "max_value": 5000,
+    "ref_id": "P1A3IL4X",
+    "user_id": 0
+}

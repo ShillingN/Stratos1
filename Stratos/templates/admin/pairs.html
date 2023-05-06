@@ -1,0 +1,633 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Пары | StratosChange{% endblock %}
+
+{% block content %}
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Пары</div>
+
+        <div class="ms-auto">
+            <div class="btn-group">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createPairBox">Добавить пару</button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changeValue" style="margin-left: 8px;">Изменение курса</button>
+            </div>
+        </div>
+    </div>
+    <!--end breadcrumb-->
+    <h6 class="mb-0 text-uppercase">Список пар</h6>
+    <hr/>
+    <div class="card">
+        <div class="card-body">
+            <div id="btn_containers" style="display: flex">
+                <div id="pages"></div>
+                <div id="search"></div>
+            </div>
+            <div class="table-responsive">
+                <table id="table" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>Пара</th>
+                        <th>Отдаю</th>
+                        <th>Получаю</th>
+                        <th>Цена (биржа)</th>
+                        <th>Цена (обменник)</th>
+                        <th>Комиссия %</th>
+                        <th>Комиссия %</th>
+                        <th>Установить значение</th>
+                        <th>Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for pair in pairs %}
+                        <tr>
+                            <td>{{ pair.t_from.name }}{% if pair.t_from.network != None %}{{ pair.t_from.network }}{% endif %}_{{ pair.t_to.name }}{% if pair.t_to.network != None %}{{ pair.t_to.network }}{% endif %}</td>
+                            <td>{{ pair.t_from.name }}{% if pair.t_from.network != None %}{{ pair.t_from.network }}{% endif %}</td>
+                            <td>{{ pair.t_to.name }}{% if pair.t_to.network != None %}{{ pair.t_to.network }}{% endif %}</td>
+                            <td><span class="n_cost">{{ pair.stock_cost }}</span></td>
+                            <td><span class="n_cost">{{ pair.cost }}</span></td>
+                            <td>{{ pair.fee }}</td>
+                            <td><input type="number" class="form-control" value="{{ pair.fee }}" onchange="setFee(this, {{ pair.id }})" {% if pair.best_position != 0 %}readonly{% endif %}></td>
+                            <td><input type="number" class="form-control" value="" placeholder="Введите цену" onchange="setValue(this, {{ pair.id }})" {% if pair.best_position != 0 %}readonly{% endif %}></td>
+                            <td>
+                                {% if pair.status == False %}
+                                    <button class="btn btn-sm btn-success" status="0" onclick="changeStatus(this, {{ pair.id }})">Включить</button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-danger" status="1" onclick="changeStatus(this, {{ pair.id }})">Отключить</button>
+                                {% endif %}
+                                <button class="btn btn-sm btn-secondary" onclick="removePair({{ pair.id }})" style="margin-left: 8px;">Удалить</button>
+                                {% if pair.best_position != 0 %}
+                                    <button class="btn btn-sm btn-danger" onclick="bestChange({{ pair.id }})" style="margin-left: 8px;">BestChange</button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-primary" onclick="bestChange({{ pair.id }})" style="margin-left: 8px;">BestChange</button>
+                                {% endif %}
+
+                                {% if pair.min_payment == 0 and pair.max_payment == 0 %}
+                                    <button class="btn btn-sm btn-primary" style="margin-left: 8px" onclick="showMinModal({{ pair.id }})">Ограничения</button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-danger" style="margin-left: 8px" onclick="showMinModal({{ pair.id }})">Ограничения</button>
+                                {% endif %}
+
+                                {% if pair.wallet == None %}
+                                    <button class="btn btn-sm btn-primary" style="margin-left: 8px" onclick="showWallet({{ pair.id }})">Кошелёк</button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-danger" style="margin-left: 8px" onclick="showWallet({{ pair.id }})">Кошелёк</button>
+                                {% endif %}
+
+                                {% if pair.city == None %}
+                                    <button class="btn btn-sm btn-primary" style="margin-left: 8px" onclick="showCity({{ pair.id }})">Город</button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-danger" style="margin-left: 8px" onclick="showCity({{ pair.id }})">Город</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="createPairBox" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Создание пары</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="ct_from" class="col-sm-3 col-form-label">Отдаю</label>
+                        <div class="col-sm-9">
+                            <select id="ct_from" class="form-select">
+                                {% for tool in tools %}
+                                    <option value="{{ tool.id }}">{{ tool.name }} {% if tool.network != None %}{{ tool.network }}{% endif %}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="ct_to" class="col-sm-3 col-form-label">Получаю</label>
+                        <div class="col-sm-9">
+                            <select id="ct_to" class="form-select">
+                                {% for tool in tools %}
+                                    <option value="{{ tool.id }}">{{ tool.name }} {% if tool.network != None %}{{ tool.network }}{% endif %}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="ct_fee" class="col-sm-3 col-form-label">Комиссия %</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="ct_fee" placeholder="10">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" onclick="createPair()">Создать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="bestBox" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Привязка к курсу</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="b_from" class="col-sm-3 col-form-label">Код "Отдаю" с BestChange</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="b_from" placeholder="" onchange="editTool(this, 'best_code', 'from')">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="b_to" class="col-sm-3 col-form-label">Код "Получаю" с BestChange</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="b_to" placeholder="" onchange="editTool(this, 'best_code', 'to')">
+                            <img src="../../static/images/best.jpg" alt="" style="margin-top: 8px;">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="b_position" class="col-sm-3 col-form-label">Позиция</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="b_position" placeholder="10">
+                            <span class="text-secondary" style="margin-top: 8px;">В случае если выбрана несуществующая позиция в списке по данной паре, закрепление будет работать неверно. Следите за количеством обменников в списке</span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="b_percent" class="col-sm-3 col-form-label">Процент разницы</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="b_percent" placeholder="10">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" onclick="setBestChange()">Привязать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <button data-bs-toggle="modal" data-bs-target="#bestBox" id="openBest" style="display: none;"></button>
+
+
+
+    <div class="modal fade" id="minModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ограничения для "Отдаю"</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="q_min_payment" class="col-sm-3 col-form-label">Минимальная сумма</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="q_min_payment" placeholder="Минимальная сумма">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="q_max_payment" class="col-sm-3 col-form-label">Максимальная сумма</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="q_max_payment" placeholder="Максимальная сумма">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="saveMin()">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button data-bs-toggle="modal" data-bs-target="#minModal" id="min_modal_btn" style="display: none;"></button>
+
+
+
+    <div class="modal fade" id="changeValue" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Массовое изменение курса</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="q_min_payment" class="col-sm-3 col-form-label">Направление</label>
+                        <div class="col-sm-9">
+                            <select id="is_fiat" class="form-select">
+                                <option value="1">Фиат-Крипта</option>
+                                <option value="0">Крипта-Фиат</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="new_percent" class="col-sm-3 col-form-label">Значение %</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="new_percent" placeholder="Значение в %">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="saveMassValue()">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button data-bs-toggle="modal" data-bs-target="#minModal" id="min_modal_btn" style="display: none;"></button>
+
+
+
+    <div class="modal fade" id="walletModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Кошелёк обмена</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="q_wallet" class="col-sm-3 col-form-label">Кошелёк</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="q_wallet" placeholder="Кошелёк">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="saveWallet()">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button data-bs-toggle="modal" data-bs-target="#walletModal" id="wallet_btn" style="display: none;"></button>
+
+
+
+    <div class="modal fade" id="cityModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Город обмена</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="q_city" class="col-sm-3 col-form-label">Город</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="q_city" placeholder="Город обмена">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="saveCity()">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button data-bs-toggle="modal" data-bs-target="#cityModal" id="city_btn" style="display: none;"></button>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        let first = true;
+        let sel_id = 0;
+        let ss_id = 0;
+        /*
+        $(document).ready(function() {
+            $('#table').DataTable();
+        } );
+        */
+
+        $(document).ready(function() {
+            $('#table').DataTable({aaSorting: [[ 0, "asc" ]]});
+
+            while (search.firstChild) {
+                search.removeChild(search.firstChild);
+            }
+
+            while (pages.firstChild) {
+                pages.removeChild(pages.firstChild);
+            }
+
+            $('input[type=search]').appendTo('#search').attr('placeholder', 'Поиск');
+            $('select[name=table_length]').appendTo('#pages')
+            $('#table_length').css('display', 'none')
+            $('#table_filter').css('display', 'none')
+
+            let s = $('input[type=search]')[0];
+            s.onchange = function () {
+                saveQuery(s, 'pairs')
+            }
+
+            if(first){
+                s.value = '{{ query }}'
+                let event = new Event('input');
+                s.dispatchEvent(event);
+                first = false;
+            }
+        } );
+
+        let pair = null;
+        let tool_from = null;
+        let tool_to = null;
+
+
+        function changeStatus(e, pair_id){
+            $.ajax({
+                url: `/api/pairs/set/status?id=${pair_id}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    alertify.success(msg['message'])
+
+                    let status = Number(e.getAttribute('status'))
+                    if(status === 0){
+                        e.className = 'btn btn-sm btn-danger';
+                        e.innerText = 'Выключить';
+                        e.setAttribute('status', '1')
+                    }
+                    else{
+                        e.className = 'btn btn-sm btn-success';
+                        e.innerText = 'Включить';
+                        e.setAttribute('status', '0')
+                    }
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+
+        function setFee(e, pair_id){
+            $.ajax({
+                url: `/api/pairs/set/fee?id=${pair_id}&fee=${e.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    alertify.success(msg['message'])
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+
+        function setValue(e, pair_id){
+            if(e.value.length === 0) return;
+            $.ajax({
+                url: `/api/pairs/set/value?id=${pair_id}&value=${e.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    alertify.success(msg['message'])
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+
+        function removePair(pair_id){
+            alertify.confirm('Удаление', 'Вы уверены, что хотите удалить пару?', function () {
+                    $.ajax({
+                        url: `/api/pairs/remove?id=${pair_id}`,
+                        success: function (msg) {
+                            if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                            location.reload();
+                        },
+                        error: function () {
+                            error('Неизвестная серверная ошибка')
+                        }
+                    });
+                },
+                function () {
+
+                })
+        }
+
+
+        let costs = $('.n_cost');
+        for(let i = 0; i < costs.length; i++){
+            costs[i].innerText = Number(costs[i].innerText).toLocaleString("ru-RU", {style: "currency", currency: "RUB"})
+        }
+
+
+
+        function createPair() {
+
+            if(ct_fee.value.length < 1) return alertify.error('Укажите комиссию в процентах');
+
+            let data = {
+                'tool_from': ct_from.value,
+                'tool_to': ct_to.value,
+                'fee': ct_fee.value,
+            }
+
+            $.ajax({
+                url: `/api/pairs/create`,
+                data: data,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    location.reload();
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function bestChange(pair_id) {
+            $.ajax({
+                url: `/api/pairs/get?id=${pair_id}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    pair = msg['pair'];
+                    tool_from = msg['tool_from'];
+                    tool_to = msg['tool_to'];
+
+                    if(pair['best_position'] === 0){
+                        b_from.value = tool_from['best_code'];
+                        b_to.value = tool_to['best_code'];
+                        b_percent.value = pair['best_percent'];
+                        $('#openBest').click()
+                    }
+                    else{
+                        alertify.confirm('Подтверждение', 'Вы действительно хотите отменить привязку?', function () {
+                                $.ajax({
+                                    url: `/api/pairs/best?id=${pair['id']}&position=0`,
+                                    success: function (msg) {
+                                        if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                                        alertify.alert('Привязка', 'Привязка удалена')
+                                        location.reload()
+                                    },
+                                    error: function () {
+                                        error('Неизвестная серверная ошибка')
+                                    }
+                                });
+                            },
+                            function () {
+
+                            })
+                    }
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function setBestChange() {
+            $.ajax({
+                url: `/api/pairs/best?id=${pair['id']}&position=${b_position.value}&percent=${b_percent.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    alertify.alert('Привязка', 'Сохранено')
+                    location.reload()
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function editTool(e, name, direction) {
+            let value = e.value;
+            let tool = tool_from;
+            if(direction === 'to') tool = tool_to
+            $.ajax({
+                url: `/api/tools/edit?id=${tool['id']}&${name}=${value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.error('Ошибка')
+                        return;
+                    }
+                    alertify.success('Сохранено')
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function showMinModal(id){
+            sel_id = id;
+            $.ajax({
+                url: `/api/pairs/get?id=${id}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    q_min_payment.value = msg['pair']['min_payment'];
+                    q_max_payment.value = msg['pair']['max_payment'];
+                    $('#min_modal_btn').click();
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function showWallet(id){
+            ss_id = id;
+            $.ajax({
+                url: `/api/pairs/get/wallet?id=${id}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    q_wallet.value = msg['wallet'];
+                    $('#wallet_btn').click();
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function showCity(id){
+            ss_id = id;
+            $.ajax({
+                url: `/api/pairs/get/city?id=${id}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    q_city.value = msg['city'];
+                    $('#city_btn').click();
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+
+        function saveMin(){
+            $.ajax({
+                url: `/api/pairs/set/min_max?id=${sel_id}&min_payment=${q_min_payment.value}&max_payment=${q_max_payment.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    alertify.success(msg['message']);
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+
+        function saveWallet(){
+            $.ajax({
+                url: `/api/pairs/set/wallet?id=${ss_id}&wallet=${q_wallet.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    alertify.success(msg['message']);
+                    q_wallet.value = '';
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+
+        function saveCity(){
+            $.ajax({
+                url: `/api/pairs/set/city?id=${ss_id}&city=${q_city.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    alertify.success(msg['message']);
+                    q_city.value = '';
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+
+        function saveMassValue(){
+            $.ajax({
+                url: `/api/pairs/set/mass?is_fiat=${is_fiat.value}&new_percent=${new_percent.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok') return alertify.alert('Ошибка', msg['message']);
+                    alertify.success(msg['message']);
+                    location.reload()
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+    </script>
+{% endblock %}

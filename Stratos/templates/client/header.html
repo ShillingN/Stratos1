@@ -1,0 +1,47 @@
+<section class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-5">
+                <div class="header_info d-flex d-flex align-items-center justify-content-sm-between">
+                    <a class="d-block header_parent_logo" href="/">
+                        <img src="../../static/client/logo.png" width="152" height="43" alt="">
+                    </a>
+                    <div class="header_schedule">
+                        <span>
+                            График работы:
+                        </span>
+                        <span class="color-green">
+                            10:00 - 23:00 МСК
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-7">
+                <div class="header_menu d-flex">
+                    <div class="navi-menu " onclick="toggleMenu(event)">
+                        <i class="fas fa-bars"></i>
+                        <i class="fas fa-times d-none"></i>
+                    </div>
+                    <ul class="header-menu-list menu-none">
+                        <li class=""><a class="{% if nav == 1 %}active{% endif %}" href="/">Обменник</a></li>
+                        <li class="parent-submenu"><a href="/" class="{% if nav == 2 %}active{% endif %}">Сервис<i class="fas fa-chevron-down color-green"></i></a>
+                            <ul class="submenu">
+                                <li><a class="" href="/rules">Правила</a></li>
+                                <li><a class="" href="/questions">Вопросы</a></li>
+                                <li><a class="" href="/support">Поддержка</a></li>
+                                <li><a class="" href="/coupon">Получить купон</a></li>
+                            </ul>
+                        </li>
+                        <li class=""><a class="{% if nav == 3 %}active{% endif %}" href="/about">О нас</a></li>
+                        <li class=""><a class="{% if nav == 4 %}active{% endif %}" href="/partners">Партнерам</a></li>
+                    </ul>
+                    {% if len(email) == 0 %}
+                    <a href="#" onclick="showAuth()" class="{% if nav == 5 %}active{% endif %}">Вход</a>
+                    {% else %}
+                    <a href="/login" class="{% if nav == 5 %}active{% endif %}">Кабинет</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

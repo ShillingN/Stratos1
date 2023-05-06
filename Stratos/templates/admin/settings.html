@@ -1,0 +1,158 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Настройки | StratosChange{% endblock %}
+
+{% block content %}
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Настройки</div>
+    </div>
+    <!--end breadcrumb-->
+    <hr/>
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <label for="min_withdraw" class="col-sm-3 col-form-label">Минимальная сумма вывода реф. средств</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control" id="min_withdraw" value="{{ settings.min_withdraw }}" onchange="setSetting(this)">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="best_minutes" class="col-sm-3 col-form-label">Частота обновления курсов с BestChange в минутах</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control" id="best_minutes" value="{{ settings.best_minutes }}" onchange="setSetting(this)">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="proxy" class="col-sm-3 col-form-label">Строка прокси подключения</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="proxy" value="{{ settings.proxy }}" onchange="setSetting(this)">
+                    <span class="text-secondary" style="margin-top: 8px">
+                        Если с авторизацией:<br>
+                        протокол://пользователь:пароль@ip:порт<br>
+                        Пример: https://user:pass@10.10.1.0:3128<br><br>
+                        Если без авторизации:<br>
+                        протокол://ip:порт<br>
+                        Пример: https://10.10.1.0:3128
+                    </span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="order_minutes" class="col-sm-3 col-form-label">Время ожидания средства по заявке, в минутах</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control" id="order_minutes" value="{{ settings.order_minutes }}" onchange="setSetting(this)">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="prices_delay" class="col-sm-3 col-form-label">Частота обновления export.xml, в секундах</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control" id="prices_delay" value="{{ settings.prices_delay }}" onchange="setSetting(this)">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="autocommit" class="col-sm-3 col-form-label">Реквизиты получателя для автообработки</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="autocommit" value="{{ settings.autocommit }}" onchange="setSetting(this)">
+                    <span class="text-secondary" style="margin-top: 8px">
+                        Оставьте пустым для отключения автообработки
+                    </span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="prices_timer" class="col-sm-3 col-form-label">Файл export.xml</label>
+                <div class="col-sm-9">
+                    <select id="prices_timer" class="form-select" onchange="setSetting(this)">
+                        <option value="0" {% if settings.prices_timer == False %}selected{% endif %}>Выключен</option>
+                        <option value="1" {% if settings.prices_timer == True %}selected{% endif %}>Включен</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="tech_stop" class="col-sm-3 col-form-label">Технические работы</label>
+                <div class="col-sm-9">
+                    <select id="tech_stop" class="form-select" onchange="setSetting(this)">
+                        <option value="0" {% if settings.tech_stop == False %}selected{% endif %}>Выключено</option>
+                        <option value="1" {% if settings.tech_stop == True %}selected{% endif %}>Включено</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="change_rests" class="col-sm-3 col-form-label">Автоматическое изменение резервов</label>
+                <div class="col-sm-9">
+                    <select id="change_rests" class="form-select" onchange="setSetting(this)">
+                        <option value="0" {% if settings.tech_stop == False %}selected{% endif %}>Выключено</option>
+                        <option value="1" {% if settings.tech_stop == True %}selected{% endif %}>Включено</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="message" class="col-sm-3 col-form-label">Всплывающее сообщение</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control wysg" id="message" rows="5" onchange="setSetting(this)">{{ settings.message|safe }}</textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="header_message" class="col-sm-3 col-form-label">Сообщение в шапке сайта</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control wysg" id="header_message" rows="5" onblur="setSetting2(this)">{{ settings.header_message|safe }}</textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="cash_text" class="col-sm-3 col-form-label">Сообщение при обмене на наличку</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control wysg" id="cash_text" rows="5" onchange="setSetting(this)">{{ settings.cash_text|safe }}</textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="header_text" class="col-sm-3 col-form-label">In header</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control wysg" id="header_text" rows="5" onchange="setSetting(this)">{{ settings.headers|safe }}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        function setSetting(e) {
+            $.ajax({
+                url: `/v1/api/settings/set?${e.id}=${e.value}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    alertify.success(msg['message']);
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+        function setSetting2(e) {
+            let txt = e.value.split('\n').join('<br>')
+            $.ajax({
+                url: `/v1/api/settings/set?${e.id}=${txt}`,
+                success: function (msg) {
+                    if(msg['status'] !== 'ok'){
+                        alertify.alert('Ошибка', msg['message']);
+                        return;
+                    }
+                    alertify.success(msg['message']);
+                },
+                error: function () {
+                    error('Неизвестная серверная ошибка')
+                }
+            });
+        }
+
+    </script>
+{% endblock %}

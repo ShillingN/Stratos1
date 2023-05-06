@@ -1,0 +1,180 @@
+{% extends 'client/base.html' %}
+
+{% block plugins %}
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+{% endblock %}
+
+{% block content %}
+
+    <section class="back-page " data-action="timer">
+        <div class="group-circle  bottom">
+            {#            <?= Html::img(Url::base().'/images/Group-2.png') ?>#}
+            <img src="../../static/client/Group-2.png" alt="">
+        </div>
+        <div class="background-header"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="h1">Заявка №{{ order.code }}</h1>
+                    <div class="timer">
+                        <span id="countdown"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-page">
+        <div class="container">
+            <div class="row">
+                <div class=" col-11 mx-auto col-lg-6 ">
+                    <div class="container-exchange mb-5">
+                        <div class="exchange-header">
+                            <div class="exchange-header-give font-title-exchange text-center upper title-contact">
+                                {#                                <?= Yii::t('site', 'Информация по обмену') ?>#}
+                                Информация по обмену
+                            </div>
+                        </div>
+                        <div class="exchange-content exchange-container-form order-content">
+                            <div class="referal-item w-100">
+                                {#                                <?= Yii::t('site', 'Статус') ?>#}
+                                Статус
+                                <span>{{ order.get_client_status() }}</span>
+                            </div>
+                            <div class="referal-item w-100">
+                                {#                                <?= Yii::t('site', 'Заявка №') ?>#}
+                                Заявка №
+                                <span>{{ order.code }}</span>
+                            </div>
+                            <div class="referal-item w-100">
+                                Создана
+                                <span>{{ order.create_date.strftime('%d.%m.%Y %H:%M') }}</span>
+                            </div>
+                            <div class="referal-item w-100">
+                                Курс
+                                <span>{{ order.get_course() }}</span>
+                            </div>
+                            <div class="referal-item w-100">
+                                <div class="order-currency">
+                                    {#                                    <?= Html::img(Url::base().'/'.Currency::CURRENCY_ICON_FOLDER.'/'.$Bid->giveCurrency->icon).' '.Yii::t('site', 'Отдаете').' '.Html::encode(CoreModel::getFieldToCurrentLanguage($Bid->giveCurrency, 'name', 'name_ru')) ?>#}
+                                    {#                                    <img src="../../static/icons/{{ order.tool_from }}.png" alt="">#}
+                                    Отдаете
+                                </div>
+                                <span>{{ order.give_amount }} {{ tool_from.name }}</span>
+                            </div>
+                            <div class="referal-item w-100">
+                                <div class="order-currency">
+                                    {#                                    <?= Html::img(Url::base().'/'.Currency::CURRENCY_ICON_FOLDER.'/'.$Bid->receiveCurrency->icon).' '.Yii::t('site', 'Получаете').' '.Html::encode(CoreModel::getFieldToCurrentLanguage($Bid->receiveCurrency, 'name', 'name_ru')) ?>#}
+                                    Получаете
+                                </div>
+                                <span>{{ order.receipt_amount }} {{ tool_to.name }}</span>
+                            </div>
+                            {#                            <div class="referal-item w-100">#}
+                            {#                                <?= Yii::t('site', 'Получаете с комиссией') ?>#}
+                            {#                                <span><?= $Bid->receive_value.' '.Html::encode($Bid->receiveCurrency->code) ?></span>#}
+                            {#                            </div>#}
+                            <div class="referal-item w-100">
+                                На счет
+                                <span>
+                                    {% if tool_to.is_cash %}
+                                        Наличные
+                                    {% else %}
+                                        {{ order.to_wallet }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="referal-item w-100">
+                                E-mail
+                                <span>{{ order.client_email }}</span>
+                            </div>
+                            {% if order.status == 0 %}
+                                <div class="referal-item w-100 align-items-center">
+                                    <p>Если вы создали заявку ошибочно или передумали совершать обмен. Вы можете</p>
+                                    <a href="#" class="btn-style border  d-inline mb-3" onclick='location.href = "/order-expired/{{ order.secret_key }}"'>Отменить заявку</a>
+                                    <a href="#" class="btn-style border  d-inline mb-3" onclick='location.href = "/confirm/{{ order.secret_key }}"'>Я оплатил</a>
+                                </div>
+                            {% elif order.status > 0 %}
+                                <p class="color-green mb-0 text-center">
+                                    Ожидайте перевода! Благодарим за сотрудничество
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-11 mx-auto col-lg-6 ">
+                    <div class="container-exchange mb-5">
+                        <div class="exchange-header">
+                            <div class="exchange-header-give font-title-exchange text-center upper title-contact">
+                                Порядок действий
+                            </div>
+                        </div>
+                        <div class="exchange-content exchange-container-form order-content">
+                            Совершите платеж
+                            <span class="bold">{{ order.give_amount }} {{ tool_from.name }}</span> по реквизитам:
+                            <span data-copy="parent">{{ order.exchange_wallet }}</span>
+                            <span>
+                                <i class="far fa-copy" id="copy_btn"></i>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        let wallet = '{{ order.exchange_wallet }}';
+        copy_btn.onclick = function () {
+            navigator.clipboard.writeText(wallet)
+                .then(() => {
+                    // Получилось!
+                })
+                .catch(err => {
+                    console.log(err);
+                    alert('Ошибка')
+                });
+        }
+
+        tippy('#copy_btn', {
+            content: 'Скопировано',
+            trigger: 'click',
+        });
+
+        var ts = {{ deadline }};
+        var countDownDate = new Date(ts);
+
+        {% if order.status == 0 %}
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Output the result in an element with id="demo"
+            document.getElementById("countdown").innerHTML = "Оплатите заявку в течение " + minutes + " мин " + seconds + " сек ";
+
+            // If the count down is over, write some text
+            console.log('DISTANCE', distance)
+            if (distance <= 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "Заявка просрочена";
+                //document.getElementById("expired_form").submit();
+                //location.href = '/order-expired/{{ order.secret_key }}'
+            }
+        }, 1000);
+        {% endif %}
+    </script>
+{% endblock %}

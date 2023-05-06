@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--favicon-->
+    <link rel="icon" href="../../static/assets/images/favicon-32x32.png" type="image/png" />
+
+    <!-- alertify.js -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    <link href="../../static/assets/plugins/datetimepicker/css/classic.css" rel="stylesheet" />
+    <link href="../../static/assets/plugins/datetimepicker/css/classic.time.css" rel="stylesheet" />
+    <link href="../../static/assets/plugins/datetimepicker/css/classic.date.css" rel="stylesheet" />
+
+    <!--select2-->
+    <link href="../../static/assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="../../static/assets/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
+
+    <!--plugins-->
+    <link href="../../static/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="../../static/assets/plugins/input-tags/css/tagsinput.css" rel="stylesheet" />
+    <link href="../../static/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="../../static/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="../../static/assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../static/assets/plugins/notifications/css/lobibox.min.css" />
+    <!-- loader-->
+    <link href="../../static/assets/css/pace.min.css" rel="stylesheet" />
+    <script src="../../static/assets/js/pace.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="../../static/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/assets/css/app.css" rel="stylesheet">
+    <link href="../../static/assets/css/icons.css" rel="stylesheet">
+    <!-- Theme Style CSS -->
+    <link rel="stylesheet" href="../../static/assets/css/dark-theme.css" />
+    <link rel="stylesheet" href="../../static/assets/css/semi-dark.css" />
+    <link rel="stylesheet" href="../../static/assets/css/header-colors.css" />
+    <title>{% block title %}Admin | StratosChange{% endblock %}</title>
+</head>
+
+<body>
+<!--wrapper-->
+<div class="wrapper">
+    <!--sidebar wrapper -->
+    <div class="sidebar-wrapper" data-simplebar="true">
+        <div class="sidebar-header">
+            <div>
+                <img src="../../static/client/logo.png" class="logo-icon" alt="logo icon" style="width: 175px;">
+            </div>
+            <div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
+            </div>
+        </div>
+        <!--navigation-->
+        <ul class="metismenu" id="menu">
+            {#            <li>#}
+            {#                <a href="javascript:;" class="has-arrow">#}
+            {#                    <div class="parent-icon"><i class='bx bx-home-circle'></i>#}
+            {#                    </div>#}
+            {#                    <div class="menu-title">Заявки</div>#}
+            {#                </a>#}
+            {#                <ul>#}
+            {#                    <li> <a href="/"><i class="bx bx-right-arrow-alt"></i>Kryptex</a>#}
+            {#                    </li>#}
+            {#                    <li>#}
+            {#                        <a href="/StratosChange" style="position: relative">#}
+            {#                            <i class="bx bx-right-arrow-alt"></i>#}
+            {#                            StratosChange#}
+            {#                            <span class="badge bg-danger" style="position: absolute; right: 8px; display: none;" id="deposit_cnt">0</span>#}
+            {#                        </a>#}
+            {#                    </li>#}
+            {#                    <li> <a href="/bt_orders"><i class="bx bx-right-arrow-alt"></i>BT</a>#}
+            {#                    </li>#}
+            {#                </ul>#}
+            {#            </li>#}
+            <li>
+                <a href="/admin/" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-home'></i>
+                    </div>
+                    <div class="menu-title">Главная</div>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/orders" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-transfer'></i>
+                    </div>
+                    <div class="menu-title">Сделки</div>
+                </a>
+            </li>
+            {% if user.admin > 1 %}
+            <li>
+                <a href="/admin/tools" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-coin-stack'></i>
+                    </div>
+                    <div class="menu-title">Инструменты</div>
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="/admin/pairs" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-transfer-alt'></i>
+                    </div>
+                    <div class="menu-title">Пары</div>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/users" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-user'></i>
+                    </div>
+                    <div class="menu-title">Пользователи</div>
+                </a>
+            </li>
+            {% if user.admin > 1 %}
+            <li>
+                <a href="/admin/settings" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-wrench'></i>
+                    </div>
+                    <div class="menu-title">Настройки</div>
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="/admin/verifications" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-certification'></i>
+                    </div>
+                    <div class="menu-title">Верификации</div>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/withdraws" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-money'></i>
+                    </div>
+                    <div class="menu-title">Заявки на вывод</div>
+                </a>
+            </li>
+            {% if user.admin > 1 %}
+            <li>
+                <a href="/admin/ref_transactions" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-network-chart'></i>
+                    </div>
+                    <div class="menu-title">Реф. начисления</div>
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="/admin/autochange" class="has-arrow">
+                    <div class="parent-icon"><i class='bx bx-calendar-week'></i>
+                    </div>
+                    <div class="menu-title">Автообмен</div>
+                </a>
+            </li>
+        </ul>
+        <!--end navigation-->
+    </div>
+    <!--end sidebar wrapper -->
+    <!--start header -->
+    <header>
+        <div class="topbar d-flex align-items-center">
+            <nav class="navbar navbar-expand">
+                <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
+                </div>
+
+                <div class="search-bar flex-grow-1">
+                    <div class="position-relative search-bar-box">
+                        <input type="text" class="form-control search-control" placeholder="Type to search..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>
+                        <span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>
+                    </div>
+                </div>
+                <div class="top-menu ms-auto">
+                </div>
+                <div class="user-box dropdown">
+                    <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://via.placeholder.com/110x110" class="user-img" alt="user avatar">
+                        <div class="user-info ps-3">
+                            <p class="user-name mb-0">{{ user.email }}</p>
+                            <p class="designattion mb-0">Администратор</p>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/logout"><i class='bx bx-log-out-circle'></i><span>Выйти</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!--end header -->
+    <!--start page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <!--end page wrapper -->
+    <!--start overlay-->
+    <div class="overlay toggle-icon"></div>
+    <!--end overlay-->
+    <!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+    <!--End Back To Top Button-->
+</div>
+<!--end wrapper-->
+
+<!-- Bootstrap JS -->
+<script src="../../static/assets/js/bootstrap.bundle.min.js"></script>
+
+<!--plugins-->
+<script src="../../static/assets/js/jquery.min.js"></script>
+<script src="../../static/assets/plugins/simplebar/js/simplebar.min.js"></script>
+<script src="../../static/assets/plugins/metismenu/js/metisMenu.min.js"></script>
+<script src="../../static/assets/plugins/input-tags/js/tagsinput.js"></script>
+<script src="../../static/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+<script src="../../static/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+<script src="../../static/assets/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
+<!--notification js -->
+<script src="../../static/assets/plugins/notifications/js/lobibox.min.js"></script>
+<script src="../../static/assets/plugins/notifications/js/notifications.min.js"></script>
+<script src="../../static/assets/plugins/notifications/js/notification-custom-script.js"></script>
+
+<!-- select2-->
+<script src="../../static/assets/plugins/select2/js/select2.min.js"></script>
+
+<!--app JS-->
+<script src="../../static/assets/js/app.js"></script>
+<script src="../../static/assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js"></script>
+
+<script src="../../static/assets/plugins/datetimepicker/js/legacy.js"></script>
+<script src="../../static/assets/plugins/datetimepicker/js/picker.js"></script>
+<script src="../../static/assets/plugins/datetimepicker/js/picker.time.js"></script>
+<script src="../../static/assets/plugins/datetimepicker/js/picker.date.js"></script>
+
+<script>
+
+    function error(text) {
+        Lobibox.notify('error', {
+            pauseDelayOnHover: true,
+            continueDelayOnInactiveTab: false,
+            position: 'top right',
+            icon: 'bx bx-x-circle',
+            msg: text
+        });
+    }
+
+    function createBlockWithClassName(element, class_name, innerText=null){
+        let el = document.createElement(element);
+        el.className = class_name;
+        if(innerText !== null)
+            el.innerHTML = innerText;
+        return el;
+    }
+
+
+    function saveQuery(e, page) {
+        $.ajax({
+            url: `/admin/save_query?query=${e.value}&page=${page}`,
+            success: function (msg) {
+            },
+            error: function () {
+            }
+        });
+    }
+</script>
+
+{% block script %}{% endblock %}
+</body>
+
+</html>

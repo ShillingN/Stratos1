@@ -1,0 +1,12 @@
+[Unit]
+Description=Stratos
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/root/stratos_venv/bin/python /root/projects/Stratos/app.py
+Restart=always
+TasksMax=5000
+
+[Install]
+WantedBy=multi-user.target

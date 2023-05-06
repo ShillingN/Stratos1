@@ -1,0 +1,796 @@
+<rates>
+<item>
+<from>ETH</from>
+        <to>QWRUB</to>
+        <in>1</in>
+        <out>114952.7899999999935971572995</out>
+        <minamount>0.13049 ETH</minamount>
+        <amount>429644.00000000</amount>
+        <maxamount>1.30488 ETH</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>ETH</from>
+        <to>CARDRUB</to>
+        <in>1</in>
+        <out>114952.7899999999935971572995</out>
+        <minamount>0.13049 ETH</minamount>
+        <amount>3432800.00000000</amount>
+        <maxamount>1.30488 ETH</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>ETH</from>
+        <to>CASHRUB</to>
+        <in>1</in>
+        <out>114952.7899999999935971572995</out>
+        <minamount>5.21953 ETH</minamount>
+        <amount>40034050.00000000</amount>
+        <maxamount>260.97670 ETH</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>USDTERC20</from>
+        <to>TCSBRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>361.15 USDTERC20</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>3611.48 USDTERC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTERC20</from>
+        <to>SBERRUB</to>
+        <in>1</in>
+        <out>91.99825299999999657529770047</out>
+        <minamount>163.05 USDTERC20</minamount>
+        <amount>2430400.00000000</amount>
+        <maxamount>1630.47 USDTERC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTERC20</from>
+        <to>QWRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>361.15 USDTERC20</minamount>
+        <amount>429644.00000000</amount>
+        <maxamount>3611.48 USDTERC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTERC20</from>
+        <to>CARDRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>361.15 USDTERC20</minamount>
+        <amount>3432800.00000000</amount>
+        <maxamount>3611.48 USDTERC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTERC20</from>
+        <to>CASHRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>14445.93 USDTERC20</minamount>
+        <amount>40034050.00000000</amount>
+        <maxamount>842679.05 USDTERC20</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>USDTTRC20</from>
+        <to>QWRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>361.15 USDTTRC20</minamount>
+        <amount>429644.00000000</amount>
+        <maxamount>4815.31 USDTTRC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTTRC20</from>
+        <to>CARDRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>361.15 USDTTRC20</minamount>
+        <amount>3432800.00000000</amount>
+        <maxamount>4815.31 USDTTRC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTTRC20</from>
+        <to>CASHRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>19261.24 USDTTRC20</minamount>
+        <amount>40034050.00000000</amount>
+        <maxamount>722296.32 USDTTRC20</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>XMR</from>
+        <to>CARDRUB</to>
+        <in>1</in>
+        <out>9765.105762000001050182618201</out>
+        <minamount>1.5361 XMR</minamount>
+        <amount>3432800.00000000</amount>
+        <maxamount>15.3608 XMR</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>TCSBRUB</from>
+        <to>BTC</to>
+        <in>6492388.780000000260770320892</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>5.20000000</amount>
+        <maxamount>130000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>SBERRUB</from>
+        <to>BTC</to>
+        <in>6492388.780000000260770320892</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>5.20000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CARDRUB</from>
+        <to>ETH</to>
+        <in>459811.1599999999743886291980</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>32.77000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>QWRUB</from>
+        <to>LTC</to>
+        <in>18202.11999999999898136593401</in>
+        <out>1</out>
+        <minamount>150000.00 RUB</minamount>
+        <amount>900.00000000</amount>
+        <maxamount>30000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CARDRUB</from>
+        <to>LTC</to>
+        <in>18202.11999999999898136593401</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>900.00000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>YAMRUB</from>
+        <to>LTC</to>
+        <in>18202.11999999999898136593401</in>
+        <out>1</out>
+        <minamount>30000.00 RUB</minamount>
+        <amount>900.00000000</amount>
+        <maxamount>60000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CASHRUB</from>
+        <to>USDTERC20</to>
+        <in>124.6025999999999953615770210</in>
+        <out>1</out>
+        <minamount>2000000.00000000 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>40000000.00000000 RUB</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>CASHUSD</from>
+        <to>USDTERC20</to>
+        <in>1.999600000000000044053649617</in>
+        <out>1</out>
+        <minamount>30000.00000000 USD</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>200000.00000000 USD</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>YAMRUB</from>
+        <to>USDTERC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>30000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>60000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>TCSBRUB</from>
+        <to>USDTTRC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>130000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CARDRUB</from>
+        <to>XMR</to>
+        <in>39060.42304800000420073047280</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>250.00000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CASHUSD</from>
+        <to>XMR</to>
+        <in>470.1259560000000305990397464</in>
+        <out>1</out>
+        <minamount>30000.00 USD</minamount>
+        <amount>250.00000000</amount>
+        <maxamount>120000.00 USD</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>YAMRUB</from>
+        <to>XMR</to>
+        <in>39060.42304800000420073047280</in>
+        <out>1</out>
+        <minamount>30000.00 RUB</minamount>
+        <amount>250.00000000</amount>
+        <maxamount>60000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>TCSBRUB</from>
+        <to>ETH</to>
+        <in>459811.1599999999743886291980</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>32.77000000</amount>
+        <maxamount>130000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>SBERRUB</from>
+        <to>ETH</to>
+        <in>459811.1599999999743886291980</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>32.77000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>QWRUB</from>
+        <to>ETH</to>
+        <in>459811.1599999999743886291980</in>
+        <out>1</out>
+        <minamount>150000.00 RUB</minamount>
+        <amount>32.77000000</amount>
+        <maxamount>30000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>BTC</from>
+        <to>YAMRUB</to>
+        <in>1</in>
+        <out>1623097.195000000065192580223</out>
+        <minamount>0.002772 BTC</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>0.092416 BTC</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTTRC20</from>
+        <to>CASHUSD</to>
+        <in>1</in>
+        <out>0.4999000000000000110134124043</out>
+        <minamount>12002.40 USDTTRC20</minamount>
+        <amount>60340500.00000000</amount>
+        <maxamount>202040.41 USDTTRC20</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>XMR</from>
+        <to>SBERRUB</to>
+        <in>1</in>
+        <out>9765.105762000001050182618201</out>
+        <minamount>1.5361 XMR</minamount>
+        <amount>2430400.00000000</amount>
+        <maxamount>15.3608 XMR</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>XMR</from>
+        <to>QWRUB</to>
+        <in>1</in>
+        <out>9765.105762000001050182618201</out>
+        <minamount>1.5361 XMR</minamount>
+        <amount>429644.00000000</amount>
+        <maxamount>15.3608 XMR</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>ETH</from>
+        <to>YAMRUB</to>
+        <in>1</in>
+        <out>114952.7899999999935971572995</out>
+        <minamount>0.13049 ETH</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>1.30488 ETH</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CARDRUB</from>
+        <to>USDTTRC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CASHRUB</from>
+        <to>USDTTRC20</to>
+        <in>124.6025999999999953615770210</in>
+        <out>1</out>
+        <minamount>2000000.00000000 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>40000000.00000000 RUB</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>CASHUSD</from>
+        <to>USDTTRC20</to>
+        <in>1.999600000000000044053649617</in>
+        <out>1</out>
+        <minamount>30000.00000000 USD</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>300000.00000000 USD</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>TCSBRUB</from>
+        <to>XMR</to>
+        <in>39060.42304800000420073047280</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>250.00000000</amount>
+        <maxamount>130000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>SBERRUB</from>
+        <to>XMR</to>
+        <in>39060.42304800000420073047280</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>250.00000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>ETH</from>
+        <to>CASHUSD</to>
+        <in>1</in>
+        <out>1606.138708000000178799382411</out>
+        <minamount>4.35828 ETH</minamount>
+        <amount>60340500.00000000</amount>
+        <maxamount>62.88373 ETH</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>CASHRUB</from>
+        <to>LTC</to>
+        <in>13651.58999999999923602445051</in>
+        <out>1</out>
+        <minamount>1200000.00000000 RUB</minamount>
+        <amount>900.00000000</amount>
+        <maxamount>5000000.00000000 RUB</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>CASHUSD</from>
+        <to>LTC</to>
+        <in>221.8000000000000113686837722</in>
+        <out>1</out>
+        <minamount>30000.00 USD</minamount>
+        <amount>900.00000000</amount>
+        <maxamount>120000.00 USD</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>SBERRUB</from>
+        <to>LTC</to>
+        <in>18202.11999999999898136593401</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>900.00000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTTRC20</from>
+        <to>TCSBRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>361.15 USDTTRC20</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>4815.31 USDTTRC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTTRC20</from>
+        <to>SBERRUB</to>
+        <in>1</in>
+        <out>92.80401647999999654530256521</out>
+        <minamount>161.63 USDTTRC20</minamount>
+        <amount>2430400.00000000</amount>
+        <maxamount>2155.08 USDTTRC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>XMR</from>
+        <to>YAMRUB</to>
+        <in>1</in>
+        <out>9765.105762000001050182618201</out>
+        <minamount>1.5361 XMR</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>15.3608 XMR</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>XMR</from>
+        <to>TCSBRUB</to>
+        <in>1</in>
+        <out>9765.105762000001050182618201</out>
+        <minamount>1.5361 XMR</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>15.3608 XMR</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>BTC</from>
+        <to>TCSBRUB</to>
+        <in>1</in>
+        <out>1623097.195000000065192580223</out>
+        <minamount>0.030805 BTC</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>0.092416 BTC</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>ETH</from>
+        <to>TCSBRUB</to>
+        <in>1</in>
+        <out>114952.7899999999935971572995</out>
+        <minamount>0.13049 ETH</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>1.30488 ETH</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>ETH</from>
+        <to>SBERRUB</to>
+        <in>1</in>
+        <out>308004.5055259999828442232683</out>
+        <minamount>0.04870 ETH</minamount>
+        <amount>2430400.00000000</amount>
+        <maxamount>0.48701 ETH</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTERC20</from>
+        <to>CASHUSD</to>
+        <in>1</in>
+        <out>0.4999000000000000110134124043</out>
+        <minamount>14002.80 USDTERC20</minamount>
+        <amount>60340500.00000000</amount>
+        <maxamount>260052.01 USDTERC20</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>CASHRUB</from>
+        <to>ETH</to>
+        <in>344858.3699999999807914718985</in>
+        <out>1</out>
+        <minamount>1999999.00000000 RUB</minamount>
+        <amount>32.77000000</amount>
+        <maxamount>40000000.00000000 RUB</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>CASHUSD</from>
+        <to>ETH</to>
+        <in>6424.554832000000715197529644</in>
+        <out>1</out>
+        <minamount>30000.00000000 USD</minamount>
+        <amount>32.77000000</amount>
+        <maxamount>200000.00000000 USD</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>YAMRUB</from>
+        <to>ETH</to>
+        <in>459811.1599999999743886291980</in>
+        <out>1</out>
+        <minamount>30000.00 RUB</minamount>
+        <amount>32.77000000</amount>
+        <maxamount>60000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>TCSBRUB</from>
+        <to>LTC</to>
+        <in>18202.11999999999898136593401</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>900.00000000</amount>
+        <maxamount>130000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>TCSBRUB</from>
+        <to>USDTERC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>130000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>SBERRUB</from>
+        <to>USDTERC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>QWRUB</from>
+        <to>USDTERC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>150000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>30000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CARDRUB</from>
+        <to>USDTERC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>SBERRUB</from>
+        <to>USDTTRC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>QWRUB</from>
+        <to>USDTTRC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>150000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>30000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>XMR</from>
+        <to>CASHRUB</to>
+        <in>1</in>
+        <out>9765.105762000001050182618201</out>
+        <minamount>1.5361 XMR</minamount>
+        <amount>40034050.00000000</amount>
+        <maxamount>15.3608 XMR</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>XMR</from>
+        <to>CASHUSD</to>
+        <in>1</in>
+        <out>117.5314890000000076497599366</out>
+        <minamount>127.6254 XMR</minamount>
+        <amount>60340500.00000000</amount>
+        <maxamount>1276.2537 XMR</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>QWRUB</from>
+        <to>BTC</to>
+        <in>6492388.780000000260770320892</in>
+        <out>1</out>
+        <minamount>150000.00 RUB</minamount>
+        <amount>5.20000000</amount>
+        <maxamount>30000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CARDRUB</from>
+        <to>BTC</to>
+        <in>6492388.780000000260770320892</in>
+        <out>1</out>
+        <minamount>15000.00 RUB</minamount>
+        <amount>5.20000000</amount>
+        <maxamount>125000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTERC20</from>
+        <to>YAMRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>361.15 USDTERC20</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>3611.48 USDTERC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CASHRUB</from>
+        <to>BTC</to>
+        <in>4869291.585000000195577740669</in>
+        <out>1</out>
+        <minamount>3000000.00000000 RUB</minamount>
+        <amount>5.20000000</amount>
+        <maxamount>40000000.00000000 RUB</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>CASHUSD</from>
+        <to>BTC</to>
+        <in>84605.36000000000058207660914</in>
+        <out>1</out>
+        <minamount>30000.00000000 USD</minamount>
+        <amount>5.20000000</amount>
+        <maxamount>200000.00000000 USD</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>YAMRUB</from>
+        <to>BTC</to>
+        <in>6492388.780000000260770320892</in>
+        <out>1</out>
+        <minamount>30000.00 RUB</minamount>
+        <amount>5.20000000</amount>
+        <maxamount>60000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTTRC20</from>
+        <to>YAMRUB</to>
+        <in>1</in>
+        <out>41.53419999999999845385900698</out>
+        <minamount>108.34 USDTTRC20</minamount>
+        <amount>1104683.00000000</amount>
+        <maxamount>361.15 USDTTRC20</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>CASHRUB</from>
+        <to>XMR</to>
+        <in>29295.31728600000315054785460</in>
+        <out>1</out>
+        <minamount>1500000.00000000 RUB</minamount>
+        <amount>250.00000000</amount>
+        <maxamount>30000000.00000000 RUB</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>YAMRUB</from>
+        <to>USDTTRC20</to>
+        <in>166.1367999999999938154360279</in>
+        <out>1</out>
+        <minamount>30000.00 RUB</minamount>
+        <amount>300000.00000000</amount>
+        <maxamount>60000.00 RUB</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>USDTTRC20</from>
+        <to>CASHEUR</to>
+        <in>1</in>
+        <out>0.5083347204135783004019799592</out>
+        <minamount>29508.12 USDTTRC20</minamount>
+        <amount>400000.00000000</amount>
+        <maxamount>393441.55 USDTTRC20</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>BTC</from>
+        <to>SBERRUB</to>
+        <in>1</in>
+        <out>4180124.516003000167896971107</out>
+        <minamount>0.011961 BTC</minamount>
+        <amount>2430400.00000000</amount>
+        <maxamount>0.035884 BTC</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>BTC</from>
+        <to>CARDRUB</to>
+        <in>1</in>
+        <out>1623097.195000000065192580223</out>
+        <minamount>0.030805 BTC</minamount>
+        <amount>3432800.00000000</amount>
+        <maxamount>0.092416 BTC</maxamount>
+        <param>manual</param>
+</item>
+<item>
+<from>BTC</from>
+        <to>CASHRUB</to>
+        <in>1</in>
+        <out>1623097.195000000065192580223</out>
+        <minamount>0.369664 BTC</minamount>
+        <amount>40034050.00000000</amount>
+        <maxamount>18.483181 BTC</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>BTC</from>
+        <to>CASHUSD</to>
+        <in>1</in>
+        <out>21151.34000000000014551915229</out>
+        <minamount>0.472783 BTC</minamount>
+        <amount>60340500.00000000</amount>
+        <maxamount>2.363916 BTC</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+<item>
+<from>BTC</from>
+        <to>CASHEUR</to>
+        <in>1</in>
+        <out>19864.99460262598950066603720</out>
+        <minamount>0.302039 BTC</minamount>
+        <amount>400000.00000000</amount>
+        <maxamount>1.510194 BTC</maxamount>
+        <param>manual</param>
+<city>MSK</city>
+</item>
+</rates>
